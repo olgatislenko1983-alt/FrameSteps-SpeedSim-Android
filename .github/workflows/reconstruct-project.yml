@@ -43,8 +43,8 @@ jobs:
           mkdir -p /tmp/project
           unzip -q /tmp/project.zip -d /tmp/project
           cp -a /tmp/project/FrameSteps-SpeedSim-Android/. .
+          rm -f .github/workflows/build-apk.yml
           rm -rf .reconstruct
-          rm -f .github/workflows/reconstruct-project.yml
           chmod +x gradlew
 
           git config user.name "github-actions[bot]"
