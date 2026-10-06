@@ -1,0 +1,54 @@
+name: reconstruct-project
+
+on:
+  push:
+    paths:
+      - '.reconstruct/READY'
+
+permissions:
+  contents: write
+
+jobs:
+  reconstruct:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore exact project archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat \
+            .reconstruct/zip.part000 \
+            .reconstruct/zip.part001 \
+            .reconstruct/zip.part002 \
+            .reconstruct/zip.part003 \
+            .reconstruct/tail.part000 \
+            .reconstruct/rem.part000 \
+            .reconstruct/rem.part001 \
+            .reconstruct/rem.part002 \
+            .reconstruct/rem.part003 \
+            .reconstruct/rem.part004 \
+            .reconstruct/rem.part005 \
+            .reconstruct/rem.part006 \
+            .reconstruct/rem.part007 \
+            .reconstruct/rem.part008 \
+            .reconstruct/rem.part009 \
+            .reconstruct/rem.part010 \
+            > /tmp/project.b64
+          base64 -d /tmp/project.b64 > /tmp/project.zip
+          rm -rf /tmp/project
+          mkdir -p /tmp/project
+          unzip -q /tmp/project.zip -d /tmp/project
+          cp -a /tmp/project/FrameSteps-SpeedSim-Android/. .
+          rm -rf .reconstruct
+          rm -f .github/workflows/reconstruct-project.yml
+          chmod +x gradlew
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Restore exact Android project from uploaded archive"
+          git push origin HEAD:main
