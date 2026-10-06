@@ -30,5 +30,6 @@ android {
 }
 
 dependencies {
+    // Распознавание активности ОС (IN_VEHICLE / ON_FOOT / WALKING / RUNNING / STILL ...)
     implementation("com.google.android.gms:play-services-location:21.3.0")
 }
