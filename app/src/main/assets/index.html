@@ -997,7 +997,8 @@ function renderDelivery(){
   else if(NET.serverDown){ dl.textContent='сервер отвечает 5xx · повторы'; dl.className='m bad'; }
   else if(NET.inflight){ dl.textContent='отправка пакета №'+NET.inflight.batch.no+(NET.inflight.batch.attempt>1?' · попытка '+NET.inflight.batch.attempt:''); dl.className='m warnc'; }
   else if(NET.retry){ dl.textContent='повтор пакета №'+NET.retry.no; dl.className='m warnc'; }
-  else if(def){ dl.textContent='отложено пакетов: '+def; dl.className='m warnc'; }  else if(pend){ dl.textContent='очередь'; dl.className='m warnc'; }
+  else if(def){ dl.textContent='отложено пакетов: '+def; dl.className='m warnc'; }
+  else if(pend){ dl.textContent='очередь'; dl.className='m warnc'; }
   else { dl.textContent=C.n?'всё доставлено':'—'; dl.className='m '+(C.n?'good':''); }
   $('dlvS').textContent='флаш раз в '+cv('BATCH_FLUSH_INTERVAL_SEC')+' с, до '+cv('BATCH_MAX_TICKS')+' тиков · таймаут '+cv('BATCH_TIMEOUT_SEC')+' с · повторов '+cv('RETRY_MAX_ATTEMPTS');
   const inq=pend+(NET.inflight?NET.inflight.batch.ticks.length:0)+(NET.retry?NET.retry.ticks.length:0)+NET.deferred.reduce((a,b)=>a+b.ticks.length,0);
