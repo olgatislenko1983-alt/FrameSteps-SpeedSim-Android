@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>FrameSteps · Симулятор v3</title>
+<title>FrameSteps Sim</title>
 <style>
 :root{
   --bg:#0a1410; --bg2:#0d1a14; --panel:#15231d; --panel2:#1a2a22; --line:rgba(255,255,255,.08);
@@ -116,79 +116,96 @@ details>summary{cursor:pointer;color:var(--mut);font-size:12px;text-transform:up
 .off{background:var(--panel2);border:1px solid var(--line);border-left:3px solid #fff;border-radius:12px;padding:8px 12px;margin:0 0 10px;font-size:13px;color:var(--mut)}
 .off b{color:var(--fg)}
 .pf select{width:100%}
+
+/* ===== мобильные экраны ===== */
+:root{--nav:64px;--bar:54px}
+html{scroll-padding-top:70px}
+body{padding-top:calc(var(--bar) + env(safe-area-inset-top));padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 14px)}
+.bar{position:fixed;top:0;left:0;right:0;height:calc(var(--bar) + env(safe-area-inset-top));padding:env(safe-area-inset-top) 14px 0;display:flex;align-items:center;gap:8px;
+  background:rgba(10,20,16,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:30}
+.bar .bt{font-size:19px;font-weight:800;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.back{background:none;border:0;color:var(--fg);font-size:34px;line-height:1;padding:0 10px 4px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.screen{max-width:560px;margin:0 auto;padding:12px 14px 6px}
+.screen.wide{max-width:1000px}
+.nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:center;background:rgba(13,26,20,.97);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:30}
+.nav button{flex:1;max-width:180px;background:none;border:0;color:var(--mut);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11.5px;min-height:var(--nav);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.nav button i{font-style:normal;font-size:23px;line-height:1}
+.nav button.on{color:var(--w1);font-weight:800}
+.sechead{margin:18px 2px 8px}
+.modechip{width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px;color:var(--fg);font-size:14px;cursor:pointer;text-align:left}
+.chev{color:var(--mut);font-size:22px;line-height:1}
+.runcard{padding:10px 12px 14px}
+.runcard #gauge{width:200px;max-width:60vw}
+.runcard #nCore,.runcard #nW2{display:none}
+.runcard .gBig{font-size:46px;margin-top:-6px}
+.runstate #fsmS{display:none}
+.runstate .off{margin-top:8px!important;font-size:13px}
+.modechip{padding:9px 14px;margin-bottom:8px}
+.runhint{text-align:center;margin:4px 0 0}
+.runstats .m{font-size:22px;font-weight:800;line-height:1.2}
+.runstats .tile{padding:12px 10px}
+.runstats .tile .s{font-size:11px;margin-top:2px}
+.runstats .tile:nth-child(n+2) .s{display:none}
+#zoneBig{font-size:22px!important}
+.runcard #eStale{display:none}
+#scr-run{padding-bottom:104px}
+.runstate{margin-top:10px;padding:10px 12px}
+.runctl{position:fixed;left:0;right:0;bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 10px);max-width:560px;margin:0 auto;padding:0 14px;display:grid;grid-template-columns:2fr 1.2fr 1fr;gap:10px;z-index:25}
+.runctl .btn{padding:17px 6px;font-size:17px;border-radius:16px;font-weight:800}
+.menu{display:flex;flex-direction:column;gap:10px}
+.mrow{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:16px;padding:14px;color:var(--fg);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mrow:active{transform:translateY(1px)}
+.mrow .mi{font-size:26px;width:36px;text-align:center}
+.mrow .mt{flex:1;display:flex;flex-direction:column;gap:2px}
+.mrow .mt b{font-size:16px}
+.mrow .mt span{font-size:12.5px;color:var(--mut)}
+.help ol{margin:0;padding-left:20px}
+.help li{margin:0 0 12px;line-height:1.5;font-size:14.5px}
+.hint{color:var(--mut);font-size:12.5px;margin-top:8px}
+.screen .card{margin-bottom:0}
+.screen .grid3{margin-top:10px}
+.screen .speeds{margin:0}
+@media (max-width:560px){
+  .btn{padding:11px 14px}
+  .params{grid-template-columns:1fr 1fr}
+  .speeds{grid-template-columns:1fr}
+  .grid3{grid-template-columns:1fr}
+  .runstats{grid-template-columns:repeat(3,1fr)}
+  .runstats .tile .s{font-size:11px}
+  .screen.wide .tblwrap{margin:0 -6px}
+}
+
+/* экран «Решение» */
+.decTick{margin:0 2px 10px}
+.card.dec{padding:14px 16px;margin-bottom:12px}
+.dec .dn{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--mut);display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.dec .dn b{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--panel2);align-items:center;justify-content:center;color:var(--fg);font-size:12px}
+.dec .dbig{font-size:40px;font-weight:800;line-height:1.1}
+.dec .du{font-size:15px;color:var(--mut);font-weight:600;margin-left:6px}
+.dec .dzone{font-size:15px;font-weight:700;margin-left:12px;padding:3px 10px;border-radius:10px;background:var(--panel2);vertical-align:middle}
+.dec .dsub{font-size:13px;color:var(--mut);margin-top:6px;line-height:1.5}
+.dec .dverd{font-size:20px;font-weight:800;margin-top:8px}
+.dec.why{border-color:var(--w1)}
+.dec .dmain{font-size:18px;font-weight:800;line-height:1.35;margin-bottom:8px}
+.dec .dsrc{font-size:15px;font-weight:700;color:var(--core);margin-bottom:8px}
+.dec .dwhy{margin:0;padding-left:18px;font-size:13px;line-height:1.5}
+.dec .dwhy li{margin-bottom:6px}
+
 .big2{font-size:34px;font-weight:800;font-variant-numeric:tabular-nums}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="top">
-    <div>
-      <h1>FrameSteps · Симулятор приложения и сервера</h1>
-      <p class="sub" style="margin:0">Клиент · сеть · сервер (слои 6–11) · реальные датчики. Конфиги и коды — из эталона МВП0.</p>
-    </div>
-    <div class="mini"><span class="badge b-idle" id="mFsm">—</span><span id="mEn">⚡ —</span></div>
-  </div>
-  <div class="tabs" id="tabs" style="margin-bottom:12px">
-    <button data-tab="app" class="on">🏃 Приложение</button>
-    <button data-tab="srv">🖥 Сервер</button>
-    <button data-tab="con">⚙ Консоль</button>
-    <button data-tab="res">📊 Итоги</button>
-  </div>
+<header class="bar" id="bar">
+  <button class="back" id="back" hidden aria-label="Назад">‹</button>
+  <div class="bt" id="barTitle">Бег</div>
+  <div class="mini"><span class="badge b-idle" id="mFsm">—</span><span id="mEn">⚡ —</span></div>
+</header>
 
-<!-- ============ ПРИЛОЖЕНИЕ ============ -->
-<section id="tab-app">
-  <div class="card">
-    <div class="row" style="justify-content:space-between">
-      <div class="row">
-        <button class="btn pri" id="start">▶ Старт</button>
-        <button class="btn" id="pause">⏸ Пауза</button>
-        <button class="btn warn" id="stop">⏹ Стоп</button>
-        <button class="btn" id="reset" title="Очистить сессию (баланс энергии не сбрасывается)">↺ Сброс</button>
-        <button class="btn" id="instant" title="Прогнать сценарий или запись целиком, без ожидания">⏩ Прогнать целиком</button>
-      </div>
-      <div class="row">
-        <div class="seg" id="mode"><button data-m="scen" class="on">Сценарий</button><button data-m="real">Реал</button><button data-m="replay">Запись</button></div>
-        <div class="seg" id="rate"><button data-r="1" class="on">1×</button><button data-r="2">2×</button><button data-r="4">4×</button><button data-r="10">10×</button></div>
-      </div>
-    </div>
-
-    <div id="scenRow" style="margin-top:10px">
-      <div class="params pf">
-        <div><label>Сценарий</label><select id="selScen"></select></div>
-        <div><label>Среда (помехи)</label><select id="selEnv"></select></div>
-        <div><label>Интенсивность помех</label><div class="seg" id="intens"><button data-i="0">выкл</button><button data-i="1" class="on">штатно</button><button data-i="2">×2</button><button data-i="3">×3</button></div></div>
-        <div><label>Seed (повторяемость)</label><div class="row" style="gap:6px"><input id="seed" type="number" value="1234" style="flex:1"><button class="btn sm" id="reseed" title="Новый случайный seed">🎲</button></div></div>
-      </div>
-      <div class="hint" id="scenDesc"></div>
-    </div>
-    <div id="replayRow" style="margin-top:10px" hidden>
-      <div class="row">
-        <button class="btn" id="recLoad">📂 Загрузить запись</button><input id="recFile" type="file" accept=".json,application/json" style="display:none">
-        <button class="btn" id="recSave">⬇ Сохранить последнюю запись</button>
-        <label class="tgl" style="cursor:pointer"><input type="checkbox" id="recCfg"> применить конфиги записи</label>
-      </div>
-      <div class="hint" id="recInfo">Запись — это входные данные датчиков: те же тики можно прогонять через конвейер при разных конфигах.</div>
-    </div>
-    <div id="realBox" style="margin-top:10px" hidden>
-      <div class="tile">
-        <div class="t">Реальные датчики телефона</div>
-        <div class="row" style="gap:16px;margin-top:6px;font-size:13px">
-          <span id="spSecure">Защищённая страница: <b id="chkSecure">—</b></span><span>Геолокация: <b id="chkGeo">—</b></span><span>Датчик движения: <b id="chkMotion">—</b></span><span>Экран не гаснет: <b id="chkWake">—</b></span><span id="spStep" hidden>Шагомер: <b id="chkStep">—</b></span><span id="spAct" hidden>Активность: <b id="chkAct">—</b></span>
-        </div>
-        <div class="row" style="margin-top:8px"><button class="btn" id="btnSensors">Разрешить датчики</button>
-          <div class="pf" id="pfThr" style="width:170px"><label>Порог шага, м/с² (имитация)</label><input id="realThr" type="number" step="0.1" value="1.2"></div></div>
-        <div class="hint" id="realLast">Экран держи включённым: в фоне браузер останавливает датчики. Активность определяется оценкой по скорости и шагам: системного распознавания в браузере нет.</div>
-      </div>
-    </div>
-
-    <div class="row" style="margin-top:10px">
-      <div class="tgl ok" id="tSig">📡 GPS-сигнал: <span class="st">есть</span></div>
-      <div class="tgl ok" id="tNet">🌐 Сеть: <span class="st">есть</span></div>
-      <div class="tgl ok" id="tSrv">🖥 Сервер: <span class="st">работает</span></div>
-      <div class="tgl" id="tFreeze">❄ Время: <span class="st">идёт</span></div>
-      <div class="pf" style="min-width:170px"><select id="selNet"></select></div>
-    </div>
-
+<main>
+<!-- ============ ЭКРАН «БЕГ» ============ -->
+<section id="scr-run" class="screen">
+  <button class="modechip" data-go="test"><span id="chipTxt">Режим: —</span><span class="chev">›</span></button>
+  <div class="card runcard">
     <div class="gaugeWrap">
       <div class="gpsPill" id="gpsPill"><span id="gpsTxt">GPS</span> <span class="bars" id="bars"><i style="height:5px"></i><i style="height:8px"></i><i style="height:12px"></i></span> <span id="accTxt" class="mut" style="font-weight:500">±— м</span></div>
       <div class="flames" id="flames"></div>
@@ -203,21 +220,82 @@ details>summary{cursor:pointer;color:var(--mut);font-size:12px;text-transform:up
       </svg>
       <div class="gBig"><span id="gv">0.0</span> <span class="gU">м/с</span></div>
       <div class="gU" id="gvk">0.0 км/ч · экран, окно 1</div>
-      <div class="energy">
+    </div>
+    <div class="hint runhint" id="runHint">—</div>
+    <div class="energy">
         <div class="eTop"><span id="eTxt">⚡ — / —</span><span class="mut" id="eNext">—</span></div>
         <div class="eBar" id="eBar"><div class="eFill" id="eFill"></div></div>
         <div class="hint" id="eStale" style="text-align:center">—</div>
       </div>
-    </div>
+  </div>
+  <div class="grid3 runstats">
+    <div class="tile"><div class="t">Зона</div><div class="m" id="zoneBig">—</div><div class="s" id="zoneS">официально, только RUN</div></div>
+    <div class="tile"><div class="t">Шаги</div><div class="m" id="steps">0</div><div class="s" id="stepsS">—</div></div>
+    <div class="tile"><div class="t">Время</div><div class="m"><span id="tk">0</span> <span class="mut" style="font-size:13px">с</span></div><div class="s">секунд сессии</div></div>
+  </div>
+  <div class="card runstate">
+    <div class="row" style="justify-content:space-between"><div class="lab" style="margin:0">Состояние · экран / сервер</div><div><span class="badge b-idle" id="fsm">—</span> <span class="badge b-idle" id="fsmSrv">—</span></div></div>
+    <div class="s mut" id="fsmS" style="font-size:12px;margin-top:4px">экран · сервер</div>
+    <div class="off" id="offStrip" style="margin:10px 0 0">Официально (сервер): —</div>
+  </div>
+  <div class="runctl">
+    <button class="btn pri" id="start">▶ Старт</button>
+    <button class="btn" id="pause">⏸ Пауза</button>
+    <button class="btn warn" id="stop">⏹ Стоп</button>
+  </div>
+</section>
 
-    <div class="speeds">
+<!-- ============ ЭКРАН «РЕШЕНИЕ» ============ -->
+<section id="scr-dec" class="screen wide" hidden>
+  <div class="hint decTick" id="decTick">Ожидает первый пакет от сервера</div>
+  <div class="card dec"><div class="dn"><b>1</b> Данные ядра</div>
+    <div class="dbig"><span id="dcV">—</span><span class="du">м/с</span></div>
+    <div class="dsub" id="dcS">—</div></div>
+  <div class="card dec"><div class="dn"><b>2</b> Выход сервера</div>
+    <div class="dbig"><span id="dsV">—</span><span class="du">м/с</span><span class="dzone" id="dsZ"></span></div>
+    <div class="dverd" id="dsVerd">—</div>
+    <div class="dsub" id="dsS">—</div></div>
+  <div class="card dec"><div class="dn"><b>3</b> Отклонение сервера от ядра</div>
+    <div class="dbig" id="ddV">—</div>
+    <div class="dsub" id="ddS">официально минус ядро</div></div>
+  <div class="card dec why"><div class="dn"><b>4</b> Причина решения</div>
+    <div class="dmain" id="drMain">—</div>
+    <div class="dsrc" id="drSrc"></div>
+    <ul class="dwhy" id="drList"></ul></div>
+  <div class="lab sechead">Последние тики</div>
+  <div class="tblwrap"><table><thead><tr><th>№</th><th>Ядро</th><th>Сервер</th><th>Δ</th><th>Решение</th></tr></thead><tbody id="decBody"></tbody></table></div>
+</section>
+
+<!-- ============ ЭКРАН «ДАННЫЕ» ============ -->
+<section id="scr-data" class="screen wide" hidden>
+  <div id="realBox" hidden>
+      <div class="tile">
+        <div class="t">Реальные датчики телефона</div>
+        <div class="row" style="gap:16px;margin-top:6px;font-size:13px">
+          <span id="spSecure">Защищённая страница: <b id="chkSecure">—</b></span><span>Геолокация: <b id="chkGeo">—</b></span><span>Датчик движения: <b id="chkMotion">—</b></span><span>Экран не гаснет: <b id="chkWake">—</b></span><span id="spStep" hidden>Шагомер: <b id="chkStep">—</b></span><span id="spAct" hidden>Активность: <b id="chkAct">—</b></span>
+        </div>
+        <div class="row" style="margin-top:8px"><button class="btn" id="btnSensors">Разрешить датчики</button>
+          <div class="pf" id="pfThr" style="width:170px"><label>Порог шага, м/с² (имитация)</label><input id="realThr" type="number" step="0.1" value="1.2"></div></div>
+        <div class="hint" id="realLast">Экран держи включённым: в фоне браузер останавливает датчики. Активность определяется оценкой по скорости и шагам: системного распознавания в браузере нет.</div>
+      </div>
+    </div>
+  <div class="lab sechead">Скорость: ядро → экран</div>
+  <div class="speeds">
       <div class="sp core"><div class="nm"><span class="dot" style="background:var(--core)"></span>От ядра · OS_SPEED</div><div class="big"><span id="vc">—</span> <span class="u">м/с</span></div><div class="kmh" id="vck">—</div><div class="zone" id="zc">—</div></div>
       <div class="sp w1"><div class="nm"><span class="dot" style="background:var(--w1)"></span>Экран · окно 1</div><div class="big"><span id="v1">—</span> <span class="u">м/с</span></div><div class="kmh" id="v1k">—</div><div class="zone" id="z1">—</div></div>
       <div class="sp w2"><div class="nm"><span class="dot" style="background:var(--w2)"></span>Экран · окно 2</div><div class="big"><span id="v2">—</span> <span class="u">м/с</span></div><div class="kmh" id="v2k">—</div><div class="zone" id="z2">—</div></div>
     </div>
-    <div class="off" id="offStrip">Официально (сервер): —</div>
+  <div class="status" style="margin:-2px 0 4px"><div>Источник замера: <b id="ms">—</b></div><div id="capw" style="color:var(--w2);display:none">⚠ выше v_max_human</div></div>
 
-    <canvas id="cv" width="1000" height="210"></canvas>
+  <div class="lab sechead">Шагомер, активность, решение сервера</div>
+  <div class="grid3">
+    <div class="tile"><div class="t">Каденс (среднее за 3 с)</div><div class="m"><span id="cad">—</span> <span class="mut" style="font-size:12px">шаг/с</span></div><div class="s" id="cadS">диапазон —</div></div>
+    <div class="tile"><div class="t">Активность</div><div class="m"><span class="badge b-act" id="act">—</span></div><div class="s" id="actS">—</div></div>
+    <div class="tile"><div class="t">Решение сервера по тику</div><div class="m" id="verd" style="font-size:15px;font-weight:800">—</div><div class="s" id="verdS">коды причин</div></div>
+  </div>
+
+  <div class="lab sechead">График скорости</div>
+  <canvas id="cv" width="1000" height="210"></canvas>
     <div class="legend">
       <span><span class="dot" style="background:var(--core)"></span>от ядра</span>
       <span><span class="dot" style="background:var(--w1)"></span>экран, окно 1</span>
@@ -226,28 +304,8 @@ details>summary{cursor:pointer;color:var(--mut);font-size:12px;text-transform:up
       <span id="trueLeg"><span class="dot" style="background:var(--true)"></span>истинная (сценарий)</span>
       <span class="mut">зоны Z0–Z3 — полосы · нет фикса — штриховка</span>
     </div>
-    <div class="status"><div>Источник замера: <b id="ms">—</b></div><div>Тик: <b id="tk">0</b> с</div><div id="capw" style="color:var(--w2);display:none">⚠ выше v_max_human</div></div>
-  </div>
 
-  <div class="card sec">
-    <div class="lab">Шагомер · состояние · доставка</div>
-    <div class="grid3">
-      <div class="tile"><div class="t">Каденс (среднее за 3 с)</div><div class="m"><span id="cad">—</span> <span class="mut" style="font-size:12px">шаг/с</span></div><div class="s" id="cadS">диапазон —</div></div>
-      <div class="tile"><div class="t">Шаги</div><div class="m" id="steps">0</div><div class="s" id="stepsS">по датчику движения</div></div>
-      <div class="tile"><div class="t">Состояние: экран / сервер</div><div class="m"><span class="badge b-idle" id="fsm">—</span> <span class="badge b-idle" id="fsmSrv">—</span></div><div class="s" id="fsmS">RUN · LOST · STOP</div></div>
-    </div>
-    <div class="grid3" style="margin-top:10px">
-      <div class="tile"><div class="t">Активность</div><div class="m"><span class="badge b-act" id="act">—</span></div><div class="s" id="actS">—</div></div>
-      <div class="tile"><div class="t">Решение сервера по тику</div><div class="m" id="verd" style="font-size:15px;font-weight:800">—</div><div class="s" id="verdS">коды причин</div></div>
-      <div class="tile"><div class="t">Зона (официально)</div><div class="m" id="zoneBig" style="font-size:15px;font-weight:800">—</div><div class="s">только RUN без HARD_DROP</div></div>
-    </div>
-    <div class="grid3" style="margin-top:10px">
-      <div class="tile"><div class="t">Доставка</div><div class="m" id="dlv" style="font-size:15px;font-weight:800">—</div><div class="s" id="dlvS">—</div></div>
-      <div class="tile"><div class="t">Очередь на клиенте</div><div class="m"><span id="buf">0</span> <span class="mut" style="font-size:12px">/ <span id="bufMax">3600</span></span></div><div class="s" id="bufS">тиков ждут отправки</div></div>
-      <div class="tile"><div class="t">Подтверждено сервером</div><div class="m"><span id="sent">0</span> <span class="mut" style="font-size:12px">· пакет №<span id="batchNo">0</span></span></div><div class="s">тиков получили ACK</div></div>
-    </div>
-  </div>
-
+  <div class="lab sechead">Журнал тиков</div>
   <div class="card sec">
     <details id="logBox">
       <summary>Лог тиков · последние 30</summary>
@@ -260,8 +318,15 @@ details>summary{cursor:pointer;color:var(--mut);font-size:12px;text-transform:up
   </div>
 </section>
 
-<!-- ============ СЕРВЕР ============ -->
-<section id="tab-srv" hidden>
+<!-- ============ ЭКРАН «СЕРВЕР» ============ -->
+<section id="scr-srv" class="screen wide" hidden>
+  <div class="lab sechead" style="margin-top:0">Доставка</div>
+  <div class="grid3">
+    <div class="tile"><div class="t">Доставка</div><div class="m" id="dlv" style="font-size:15px;font-weight:800">—</div><div class="s" id="dlvS">—</div></div>
+    <div class="tile"><div class="t">Очередь на клиенте</div><div class="m"><span id="buf">0</span> <span class="mut" style="font-size:12px">/ <span id="bufMax">3600</span></span></div><div class="s" id="bufS">тиков ждут отправки</div></div>
+    <div class="tile"><div class="t">Подтверждено сервером</div><div class="m"><span id="sent">0</span> <span class="mut" style="font-size:12px">· пакет №<span id="batchNo">0</span></span></div><div class="s">тиков получили ACK</div></div>
+  </div>
+  <div class="lab sechead">Сервер</div>
   <div class="grid3">
     <div class="tile"><div class="t">Сессия на сервере</div><div class="m"><span class="badge b-idle" id="sState">—</span></div><div class="s" id="sStateS">—</div></div>
     <div class="tile"><div class="t">Принято тиков</div><div class="m" id="sTicks">0</div><div class="s" id="sTicksS">—</div></div>
@@ -289,17 +354,91 @@ details>summary{cursor:pointer;color:var(--mut);font-size:12px;text-transform:up
   </div>
 </section>
 
-<!-- ============ КОНСОЛЬ ============ -->
-<section id="tab-con" hidden>
-  <div class="subtabs" id="subtabs">
-    <button data-sub="cfg" class="on">Конфиги</button>
-    <button data-sub="calc">Расчёт</button>
-    <button data-sub="en">Энергия</button>
-    <button data-sub="env">Среды и помехи</button>
-    <button data-sub="json">JSON и коды</button>
+<!-- ============ ЭКРАН «ИТОГИ» ============ -->
+<section id="scr-res" class="screen wide" hidden>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><div class="lab" style="margin:0">Секунды по зонам (официально, засчитанные тики RUN)</div>
+      <div class="row"><button class="btn sm" id="abSave">Зафиксировать как A</button><button class="btn sm" id="abClear">Сбросить A</button><button class="btn sm" id="expCsv">📋 CSV</button><button class="btn sm" id="expRec">⬇ Запись</button></div></div>
+    <div id="zBars" style="margin-top:8px"></div>
+    <div class="status" id="zCheck"></div>
   </div>
+  <div class="grid3 sec">
+    <div class="card"><div class="lab">Тики на сервере</div><div id="stTicks"></div></div>
+    <div class="card"><div class="lab">Экран и сервер</div><div id="stDiff"></div></div>
+    <div class="card"><div class="lab">Энергия и шаги</div><div id="stEnergy"></div></div>
+  </div>
+  <div class="card sec"><div class="lab">Сравнение прогонов (A — зафиксированный, B — текущий)</div><div id="abBox" class="hint">Прогони сценарий, нажми «Зафиксировать как A», поменяй конфиг, прогони тот же сценарий с тем же seed и сравни.</div></div>
+  <div class="card sec"><div class="lab">Коды по тикам (официально)</div><div class="tblwrap" style="max-height:300px"><table><thead><tr><th>Код</th><th>Эффект</th><th class="num">Тиков</th></tr></thead><tbody id="stReasons"></tbody></table></div></div>
+</section>
 
-  <div id="sub-cfg" class="card">
+<!-- ============ ЭКРАН «ЕЩЁ» ============ -->
+<section id="scr-more" class="screen" hidden>
+  <div class="menu">
+    <button class="mrow" data-go="srv"><span class="mi">🖥</span><span class="mt"><b>Сервер</b><span>Доставка пакетов, очередь, приём тиков, сеть</span></span><span class="chev">›</span></button>
+    <button class="mrow" data-go="test"><span class="mi">🎛</span><span class="mt"><b>Режим и сценарий</b><span>Реал, сценарии, помехи, потеря GPS и сети</span></span><span class="chev">›</span></button>
+    <button class="mrow" data-go="con"><span class="mi">⚙</span><span class="mt"><b>Консоль</b><span>Конфиги, расчёт, энергия, среды, JSON и коды</span></span><span class="chev">›</span></button>
+    <button class="mrow" data-go="help"><span class="mi">📘</span><span class="mt"><b>Как пользоваться</b><span>Порядок работы на телефоне</span></span><span class="chev">›</span></button>
+  </div>
+  <p class="sub" style="margin-top:16px;text-align:center">FrameSteps Sim · версия 3<br>Клиент · сеть · сервер (слои 6–12) · датчики телефона. Конфиги и коды — из эталона МВП0.</p>
+</section>
+
+<!-- ============ ЭКРАН «РЕЖИМ И СЦЕНАРИЙ» ============ -->
+<section id="scr-test" class="screen" hidden>
+  <div class="card">
+    <div class="lab">Источник данных</div>
+    <div class="seg" id="mode"><button data-m="scen" class="on">Сценарий</button><button data-m="real">Реал</button><button data-m="replay">Запись</button></div>
+    <div class="hint" id="modeHint">—</div>
+    <div id="scenRow" style="margin-top:12px">
+      <div class="params pf">
+        <div><label>Сценарий</label><select id="selScen"></select></div>
+        <div><label>Среда (помехи)</label><select id="selEnv"></select></div>
+        <div><label>Интенсивность помех</label><div class="seg" id="intens"><button data-i="0">выкл</button><button data-i="1" class="on">штатно</button><button data-i="2">×2</button><button data-i="3">×3</button></div></div>
+        <div><label>Seed (повторяемость)</label><div class="row" style="gap:6px"><input id="seed" type="number" value="1234" style="flex:1"><button class="btn sm" id="reseed" title="Новый случайный seed">🎲</button></div></div>
+      </div>
+      <div class="hint" id="scenDesc"></div>
+    </div>
+    <div id="replayRow" style="margin-top:10px" hidden>
+      <div class="row">
+        <button class="btn" id="recLoad">📂 Загрузить запись</button><input id="recFile" type="file" accept=".json,application/json" style="display:none">
+        <button class="btn" id="recSave">⬇ Сохранить последнюю запись</button>
+        <label class="tgl" style="cursor:pointer"><input type="checkbox" id="recCfg"> применить конфиги записи</label>
+      </div>
+      <div class="hint" id="recInfo">Запись — это входные данные датчиков: те же тики можно прогонять через конвейер при разных конфигах.</div>
+    </div>
+  </div>
+  <div class="card sec">
+    <div class="lab">События и сеть</div>
+    <div class="row">
+      <div class="tgl ok" id="tSig">📡 GPS-сигнал: <span class="st">есть</span></div>
+      <div class="tgl ok" id="tNet">🌐 Сеть: <span class="st">есть</span></div>
+      <div class="tgl ok" id="tSrv">🖥 Сервер: <span class="st">работает</span></div>
+      <div class="tgl" id="tFreeze">❄ Время: <span class="st">идёт</span></div>
+      <div class="pf" style="min-width:170px"><select id="selNet"></select></div>
+    </div>
+    <div class="hint">Переключатели «Сеть» и «Сервер» управляют имитацией внутри приложения. Режим полёта телефона на неё не влияет.</div>
+  </div>
+  <div class="card sec">
+    <div class="lab">Скорость и сессия</div>
+    <div class="seg" id="rate"><button data-r="1" class="on">1×</button><button data-r="2">2×</button><button data-r="4">4×</button><button data-r="10">10×</button></div>
+    <div class="hint">Ускорение действует только в режимах «Сценарий» и «Запись».</div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn" id="instant" title="Прогнать сценарий или запись целиком, без ожидания">⏩ Прогнать целиком</button>
+      <button class="btn" id="reset" title="Очистить сессию (баланс энергии не сбрасывается)">↺ Сброс сессии</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ЭКРАН «КОНСОЛЬ» ============ -->
+<section id="scr-con" class="screen" hidden>
+  <div class="menu">
+    <button class="mrow" data-go="sub-cfg"><span class="mi">🧮</span><span class="mt"><b>Конфиги</b><span>Значения параметров эталона, правка вживую</span></span><span class="chev">›</span></button>
+    <button class="mrow" data-go="sub-calc"><span class="mi">📐</span><span class="mt"><b>Расчёт скорости</b><span>Окно 2, приоритет источника замера</span></span><span class="chev">›</span></button>
+    <button class="mrow" data-go="sub-en"><span class="mi">⚡</span><span class="mt"><b>Энергия</b><span>Максимум, апдейт, время симулятора, журнал</span></span><span class="chev">›</span></button>
+    <button class="mrow" data-go="sub-env"><span class="mi">🌫</span><span class="mt"><b>Среды и помехи</b><span>Параметры шума сценариев</span></span><span class="chev">›</span></button>
+    <button class="mrow" data-go="sub-json"><span class="mi">🧾</span><span class="mt"><b>JSON и коды</b><span>Загрузка и выгрузка конфигов, карта кодов причин</span></span><span class="chev">›</span></button>
+  </div>
+</section>
+<section id="scr-sub-cfg" class="screen wide" hidden><div class="card">
     <div class="lab">Конфиги — правка вживую</div>
     <div class="hint" style="margin:0 0 6px"><span class="used">●</span> влияет на симулятор · <span class="refonly">○</span> справочно · жёлтая рамка — изменено относительно эталона · наведи на имя — полное определение. Правка действует и на экран, и на сервер.</div>
     <input type="search" id="cfgSearch" placeholder="поиск по имени, значению или пояснению…">
@@ -308,24 +447,22 @@ details>summary{cursor:pointer;color:var(--mut);font-size:12px;text-transform:up
       <tbody id="cfgBody"></tbody>
     </table></div>
     <div class="status"><div>Источник: <b id="cfgSrc">эталон МВП0 (встроенный набор)</b></div><div>Параметров: <b id="cfgN">0</b></div><div>Изменено: <b id="cfgMod">0</b></div></div>
-  </div>
-
-  <div id="sub-calc" class="card" hidden>
+  </div></section>
+<section id="scr-sub-calc" class="screen" hidden><div class="card">
     <div class="lab">Расчёт скорости (параметры симулятора)</div>
     <div class="params pf">
       <div><label>Окно 2 (тиков)</label><input id="pW2" type="number" min="1" step="1" value="2"></div>
       <div><label>Приоритет источника замера</label><select id="pSrc"><option value="os">OS_SPEED → GPS_DELTA</option><option value="delta">GPS_DELTA → OS_SPEED</option><option value="osonly">только OS_SPEED</option></select></div>
     </div>
     <div class="hint">Окно 1 задаёт конфиг window_size, он общий для экрана и сервера. Окно 2 считается только на экране. Приоритет источника применяется и на экране, и на сервере.</div>
-  </div>
-
-  <div id="sub-en" class="card" hidden>
+  </div></section>
+<section id="scr-sub-en" class="screen wide" hidden><div class="card">
     <div class="lab">Энергия · счёт на сервере</div>
     <div class="row" style="align-items:flex-end;gap:18px">
       <div><div class="mut" style="font-size:11px">Баланс на сервере</div><div class="big2"><span id="cEn">—</span> <span class="mut" style="font-size:16px">/ <span id="cEnMax">—</span></span></div></div>
       <div class="pf" style="width:150px"><label>ENERGY_MAX</label><input id="pEmax" type="number" min="1" step="1"></div>
       <button class="btn pri" id="eUpd">Апдейт</button>
-      <button class="btn" id="eRefill">Пополнить сейчас</button>
+      <button class="btn" id="eRefill">Пополнить сразу</button>
       <button class="btn warn" id="eZero">Обнулить</button>
     </div>
     <div class="hint">Апдейт: записывает ENERGY_MAX и ставит баланс в максимум. Списание 1/60 идёт на сервере за каждый засчитанный тик (RUN, без HARD_DROP, v не ниже V_MOVE_MIN). Клиент узнаёт баланс из ACK: при обрыве сети экран показывает последнее известное значение. Пополнение: 25% от ENERGY_MAX в 00:00 · 06:00 · 12:00 · 18:00 UTC. Ниже 0 и выше максимума не уходит. При нуле тики идут, но помечаются energy_depleted.</div>
@@ -342,60 +479,64 @@ details>summary{cursor:pointer;color:var(--mut);font-size:12px;text-transform:up
     </div>
     <div class="lab" style="margin-top:16px">Журнал энергии · последние 15</div>
     <div class="tblwrap" style="max-height:300px"><table><thead><tr><th>t (UTC)</th><th class="num">Δ</th><th class="num">Баланс</th><th>Событие</th></tr></thead><tbody id="eLog"></tbody></table></div>
-  </div>
-
-  <div id="sub-env" class="card" hidden>
+  </div></section>
+<section id="scr-sub-env" class="screen wide" hidden><div class="card">
     <div class="lab">Среды и помехи (параметры симулятора, не эталон)</div>
     <div class="tblwrap" style="max-height:none"><table><thead><tr><th>Среда</th><th class="num">точность, м</th><th class="num">разброс, м</th><th class="num">выпадение фикса</th><th class="num">скачок позиции</th><th class="num">величина скачка, м</th><th class="num">шум OS-скорости, м/с</th><th class="num">шум позиции, м</th></tr></thead><tbody id="envBody"></tbody></table></div>
     <div class="hint">Множитель «Интенсивность помех» масштабирует разброс, шумы и вероятности. Порог пригодной позиции — ACC_MAX_FOR_FIX (сервер) и UI_ACC_THRESHOLD (экран), оба 50 м из эталона: в «Каньоне домов» и «Помещении» точность регулярно их пересекает. Скачок позиции портит GPS_DELTA, но не OS_SPEED: сравни приоритеты источников в «Расчёте».</div>
-  </div>
-
-  <div id="sub-json" class="card" hidden>
+  </div></section>
+<section id="scr-sub-json" class="screen wide" hidden><div class="card">
     <div class="lab">JSON</div>
     <div class="row">
       <button class="btn" id="loadBtn">📂 Загрузить JSON</button><input id="file" type="file" accept=".json,application/json" style="display:none">
       <button class="btn" id="expFlat">⬇ Выгрузить: плоский</button>
-      <button class="btn" id="expAdm">⬇ Выгрузить: формат админки</button>
+      <button class="btn" id="expAdm">⬇ Выгрузить: формат панели администратора</button>
       <button class="btn warn" id="cfgReset">↺ Сброс к эталону</button>
     </div>
-    <div class="hint">Принимает: плоский <code>{"ИМЯ":значение}</code>, <code>{"configs":{"ИМЯ":{"value":…}}}</code> и справочник админки <code>{configs, reason_codes, gloss}</code>. Известные числовые параметры обновляются, нечисловое значение у числового параметра пропускается (остаётся эталонное). Остальные ключи добавляются в таблицу как справочные.</div>
+    <div class="hint">Принимает: плоский <code>{"ИМЯ":значение}</code>, <code>{"configs":{"ИМЯ":{"value":…}}}</code> и справочник панели администратора <code>{configs, reason_codes, gloss}</code>. Известные числовые параметры обновляются, нечисловое значение у числового параметра пропускается (остаётся эталонное). Остальные ключи добавляются в таблицу как справочные.</div>
     <div class="lab" style="margin-top:16px">Коды причин <span id="codesN" class="mut"></span></div>
     <input type="search" id="codeSearch" placeholder="поиск по коду или условию…">
     <div class="tblwrap"><table><thead><tr><th style="width:36px"></th><th>Код</th><th>Эффект</th><th>Условие</th></tr></thead><tbody id="codeBody"></tbody></table></div>
     <div class="hint"><span class="used">●</span> код применяется в симуляторе.</div>
-  </div>
-</section>
+  </div></section>
 
-<!-- ============ ИТОГИ ============ -->
-<section id="tab-res" hidden>
-  <div class="card">
-    <div class="row" style="justify-content:space-between"><div class="lab" style="margin:0">Секунды по зонам (официально, засчитанные тики RUN)</div>
-      <div class="row"><button class="btn sm" id="abSave">Зафиксировать как A</button><button class="btn sm" id="abClear">Сбросить A</button><button class="btn sm" id="expCsv">📋 CSV</button><button class="btn sm" id="expRec">⬇ Запись</button></div></div>
-    <div id="zBars" style="margin-top:8px"></div>
-    <div class="status" id="zCheck"></div>
+<!-- ============ ЭКРАН «КАК ПОЛЬЗОВАТЬСЯ» ============ -->
+<section id="scr-help" class="screen" hidden>
+  <div class="card help">
+    <ol>
+      <li><b>Разрешения.</b> При первом запуске выдай «Точная геолокация» и «Физическая активность». Включи GPS в шторке телефона.</li>
+      <li><b>Бег.</b> Открой экран «Бег» и нажми «Старт». На телефоне приложение работает в режиме «Реал»: данные идут от датчиков.</li>
+      <li><b>Иди или беги.</b> На экране «Бег» видны скорость, зона, шаги и время. Кнопка «Пауза» ставит паузу пользователя, «Стоп» завершает сессию.</li>
+      <li><b>Решение.</b> Четыре блока: данные ядра, выход сервера, отклонение сервера от ядра и причина решения (взял скорость телефона, посчитал по координатам, удержал прошлую, отклонил по коду).</li>
+      <li><b>Данные.</b> Что видит ядро ОС, экран и сервер: скорость, шаги, активность, график, журнал тиков.</li>
+      <li><b>Итоги.</b> Секунды по зонам, коды причин, выгрузка CSV и записи прогона.</li>
+      <li><b>Ещё.</b> «Режим и сценарий» — сценарии с помехами, потеря GPS и сети. «Сервер» — доставка пакетов и очереди. «Консоль» — конфиги, энергия, карта кодов.</li>
+    </ol>
+    <p class="hint">Экран остаётся включённым на время работы. Работа с погашенным экраном в этой версии не реализована.</p>
   </div>
-  <div class="grid3 sec">
-    <div class="card"><div class="lab">Тики на сервере</div><div id="stTicks"></div></div>
-    <div class="card"><div class="lab">Экран и сервер</div><div id="stDiff"></div></div>
-    <div class="card"><div class="lab">Энергия и шаги</div><div id="stEnergy"></div></div>
-  </div>
-  <div class="card sec"><div class="lab">Сравнение прогонов (A — зафиксированный, B — текущий)</div><div id="abBox" class="hint">Прогони сценарий, нажми «Зафиксировать как A», поменяй конфиг, прогони тот же сценарий с тем же seed и сравни.</div></div>
-  <div class="card sec"><div class="lab">Коды по тикам (официально)</div><div class="tblwrap" style="max-height:300px"><table><thead><tr><th>Код</th><th>Эффект</th><th class="num">Тиков</th></tr></thead><tbody id="stReasons"></tbody></table></div></div>
 </section>
-</div>
+</main>
+
+<nav class="nav" id="nav">
+  <button data-go="run" class="on"><i>🏃</i><span>Бег</span></button>
+  <button data-go="dec"><i>⚖</i><span>Решение</span></button>
+  <button data-go="data"><i>📡</i><span>Данные</span></button>
+  <button data-go="res"><i>📊</i><span>Итоги</span></button>
+  <button data-go="more"><i>☰</i><span>Ещё</span></button>
+</nav>
 <div id="toast"></div>
 
 <script>
 /* ===== ядро: конфиги, утилиты, время, счёт энергии ===== */
 const $=id=>document.getElementById(id);
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
-const DEFAULTS={"window_size": {"value": 1, "unit": "тиков", "definition": "Параметр задаёт число последних секунд, используемых при вычислении оценки скорости. В МВП0 установлено значение 1: сглаживание не применяется, оценка равна текущему измерению. Увеличение значения повышает устойчивость оценки и снижает скорость отклика."}, "v_max_human_mps": {"value": 8, "unit": "м/с", "definition": "Параметр задаёт верхний предел физиологически достижимой скорости бега. Тик со скоростью выше предела признаётся недостоверным и к учёту дистанции не допускается."}, "ACC_MAX_FOR_FIX": {"value": 50, "unit": "м", "definition": "Параметр задаёт наибольшую допустимую погрешность позиции, при которой позиция признаётся пригодной (has_fix). При худшей точности позиция в тике не используется."}, "UI_ACC_THRESHOLD": {"value": 50, "unit": "м", "definition": "Параметр задаёт интерфейсный порог точности позиции. Намеренно отдельная константа от серверной проверки."}, "GNSS_FRESHNESS_MAX_SEC": {"value": 2, "unit": "с", "definition": "Параметр задаёт предельный возраст спутниковой позиции, при котором позиция признаётся пригодной для тика."}, "hold_timeout_sec": {"value": 5, "unit": "с", "definition": "Параметр задаёт предельную длительность удержания последней действительной оценки скорости при отсутствии измерений. По истечении предела оценке присваивается значение «отсутствует»; вымышленные значения не формируются."}, "V_STOP_MPS": {"value": 0.5, "unit": "м/с", "definition": "Параметр задаёт порог скорости для перехода в паузу: при значениях ниже порога фиксируется кандидат на паузу. Единая константа с порогом обнуления оценки скорости — два определения покоя не расходятся. Пара к V_RESUME_MPS (гистерезис)."}, "V_MOVE_MIN": {"value": 0.5, "unit": "м/с", "definition": "Параметр задаёт скорость, начиная с которой перемещение признаётся значимым в проверке передвижения на транспорте."}, "V_RESUME_MPS": {"value": 1, "unit": "м/с", "definition": "Параметр задаёт порог скорости для возврата из паузы в движение. Установлен вдвое выше порога паузы: разнесение порогов входа и выхода (гистерезис 2:1) исключает многократные переключения состояния при колебаниях скорости около границы."}, "k_stop": {"value": 3, "unit": "тиков", "definition": "Параметр задаёт число последовательных тиков без значимого перемещения для подтверждения остановки."}, "UI_PAUSE_MAX_SEC": {"value": 10, "unit": "с", "definition": "Параметр задаёт длительность отсутствия движения, по достижении которой экран переводится на ступень паузы."}, "UI_MOTION_THRESHOLD": {"value": 0.5, "unit": "м/с", "definition": "Параметр задаёт интерфейсный порог активного движения. Отдельная константа от серверного порога значимой скорости."}, "UI_LOSS_STOP_SEC": {"value": 30, "unit": "с", "definition": "Параметр задаёт длительность отсутствия сигнала, по достижении которой экран переводится на ступень остановки."}, "T_LOSS_STOP_SEC": {"value": 30, "unit": "с", "definition": "Параметр задаёт длительность потери сигнала, по достижении которой ступень экрана переводится в остановку записи."}, "LOST_MICRO_MAX_SEC": {"value": 5, "unit": "с", "definition": "Параметр задаёт длительность микропотери сигнала, перекрываемой удержанием оценки без смены состояния."}, "PAUSE_MAX_SEC": {"value": 300, "unit": "с", "definition": "Параметр задаёт предельную длительность короткой паузы; единая константа с порогом неподвижности завершения."}, "CADENCE_MIN_SPS": {"value": 0.5, "unit": "шаг/с", "definition": "Нижний предел частоты шага в проверке биомеханики. Частота ниже предела при наличии шагов — жёсткое отклонение тика."}, "CADENCE_MAX_SPS": {"value": 5, "unit": "шаг/с", "definition": "Верхний предел частоты шага в проверке биомеханики. Частота выше предела при наличии шагов — жёсткое отклонение тика."}, "SMA_STOP": {"value": 0.3, "unit": "м/с²", "definition": "Параметр задаёт амплитуду ускорений, ниже которой устройство расценивается как неподвижное."}, "IMU_MIN_SAMPLES_PER_TICK": {"value": 20, "unit": "шт", "definition": "Параметр задаёт наименьшее число отсчётов датчика движения за тик, при котором буфер признаётся исправным (imu_buffer_ok)."}, "ACTIVITY_MAX_AGE_SEC": {"value": 10, "unit": "с", "definition": "Параметр задаёт предельный возраст значения распознанной активности. Значение старше предела в проверках не используется."}, "S_MIN": {"value": 0.75, "unit": "(м/с)²", "definition": "Параметр задаёт нижнюю границу оценки разброса скорости в тесте статистического выброса. Назначение — исключить вырождение знаменателя при малом окне: без нижней границы допустимое отклонение обращается в ноль и любое измерение признаётся выбросом."}, "N_RESID_MIN": {"value": 1, "unit": "тиков", "definition": "Параметр задаёт наименьшее число тиков для применимости теста остатка."}, "CHI2_99_DF1": {"value": 6.635, "unit": "—", "definition": "Параметр задаёт критическое значение распределения хи-квадрат с одной степенью свободы на уровне 99 %: превышение означает статистически почти невероятное отклонение."}, "antifraud_window_sec": {"value": 10, "unit": "с", "definition": "Параметр задаёт длительность окна агрегации оконных проверок. Проверки реализуются в выключенном состоянии; включение предусмотрено к МВП2."}, "speed_monotonic_stddev_max": {"value": 0.3, "unit": "м/с", "definition": "Параметр задаёт нижний порог стандартного отклонения скорости по окну: меньшие значения означают равномерность, нехарактерную для естественного бега."}, "steps_shake_threshold": {"value": 5, "unit": "шаг", "definition": "Параметр задаёт число шагов по окну, начиная с которого при отсутствии смещения фиксируется тряска на месте."}, "d_min_displacement_for_steps": {"value": 0.5, "unit": "м", "definition": "Параметр задаёт минимальное смещение, соответствующее наличию шагов в окне; меньшие значения при шагах — признак тряски на месте."}, "d_significant_no_steps": {"value": 5, "unit": "м", "definition": "Параметр задаёт значимое смещение по окну; достижение смещения при нулевых шагах — признак переноса без бега."}, "BATCH_FLUSH_INTERVAL_SEC": {"value": 1, "unit": "с", "definition": "Параметр задаёт интервал отправки пакетов при доступной сети. При действующем значении пакет передаётся ежесекундно и при штатной записи содержит один тик."}, "BATCH_MAX_TICKS": {"value": 30, "unit": "шт", "definition": "Параметр задаёт наибольшее число тиков в одном пакете передачи. Отправка пакета выполняется по первому из двух событий: накоплен предельный объём либо истёк интервал отправки."}, "MAX_BATCH_TICKS": {"value": 60, "unit": "шт", "definition": "Параметр задаёт серверный предел числа тиков в запросе. Норматив: не менее клиентского предела пакета — серверная граница принимает клиентский максимум с запасом."}, "BATCH_TIMEOUT_SEC": {"value": 15, "unit": "с", "definition": "Параметр задаёт время ожидания подтверждения пакета; по истечении пакет признаётся недоставленным и переходит в цикл повторов."}, "RETRY_MAX_ATTEMPTS": {"value": 5, "unit": "шт", "definition": "Параметр задаёт число повторных отправок пакета до перевода партии в отложенную очередь."}, "DEFERRED_RETRY_INTERVAL_SEC": {"value": 60, "unit": "с", "definition": "Параметр задаёт интервал повторных попыток доотправки отложенных партий."}, "OFFLINE_BUFFER_MAX_TICKS": {"value": 3600, "unit": "тиков", "definition": "Параметр задаёт ёмкость буфера накопления при отсутствии сети; значение соответствует одному часу записи. При достижении ёмкости применяется политика остановки накопления."}, "ACK_LATENCY_THRESHOLD_MS": {"value": 300, "unit": "мс", "definition": "Параметр задаёт норматив длительности подтверждения пакета сервером. Превышение норматива фиксируется наблюдением; на приём пакета не влияет."}, "POLICY_ACTIVITY_VEHICLE": {"value": "HARD_DROP", "unit": "—", "definition": "Политика определяет последствие распознанной поездки на транспорте при значимой скорости: действующее значение — жёсткое отклонение тика."}, "POLICY_MOCK_DETECTION": {"value": "включено", "unit": "—", "definition": "Политика определяет применение потиковой проверки подменного поставщика геопозиции. Отключение выполняется одним значением без правки контракта."}, "POLICY_DROP_ON_CONF99_FALSE": {"value": "выключено", "unit": "—", "definition": "Политика определяет жёсткую ветвь статистического выброса. Во включённом состоянии выброс отклоняет тик; действующее состояние — выключено, выброс фиксируется кодом причины с сохранением допуска."}, "L_min": {"value": 0.3, "unit": "м/шаг", "definition": "Параметры задают нижний и верхний пределы длины шага человека в проверке биомеханики. Значения вне пределов при наличии шагов — жёсткое отклонение тика."}, "L_max": {"value": 2.5, "unit": "м/шаг", "definition": "Параметры задают нижний и верхний пределы длины шага человека в проверке биомеханики. Значения вне пределов при наличии шагов — жёсткое отклонение тика."}, "R_meas": {"value": 1.0, "unit": "(м/с)²", "definition": "Параметр задаёт дисперсию шума измерения скорости по источникам; в МВП0 применяется единое значение профиля источника. В симуляторе действует единое значение профиля МВП0 (1,0)."}, "Z1_V_MIN": {"value": 1.0, "unit": "м/с", "definition": "Нижний край первой зоны: открытое решение продукта — оплачивать ли темп ниже него. Ориентир 1,0 м/с; сетка читает значение из файла."}, "B1 (Z1/Z2)": {"value": 1.39, "unit": "м/с", "definition": "Граница Z1/Z2 — 5 км/ч (из строк Z1/Z2 реестра)."}, "B2 (Z2/Z3)": {"value": 2.78, "unit": "м/с", "definition": "Граница Z2/Z3 — 10 км/ч (из строк Z2/Z3 реестра)."}, "POLICY_WINDOW_ANTIFRAUD": {"value": "выключено", "unit": "—", "definition": "Политика определяет применение оконных проверок против синтетического движения. Проверки реализуются в выключенном состоянии; для точного антифрода на физиологии движения включение предусмотрено к МВП2. В реестре значение не задано; стартовое «выключено» — предложение слоя 9 для МВП0. Допустимо «включено»."}, "ENERGY_MAX": {"value": 20, "unit": "ед.", "definition": "Только симулятор, в эталоне параметра нет. Максимум энергии; списание 1/60 за засчитанный тик, пополнение 25% в 00/06/12/18 UTC."}};
+const DEFAULTS={"window_size": {"value": 1, "unit": "тиков", "definition": "Параметр задаёт число последних секунд, используемых при вычислении оценки скорости. В МВП0 установлено значение 1: сглаживание не применяется, оценка равна текущему измерению. Увеличение значения повышает устойчивость оценки и снижает скорость отклика."}, "v_max_human_mps": {"value": 8, "unit": "м/с", "definition": "Параметр задаёт верхний предел физиологически достижимой скорости бега. Тик со скоростью выше предела признаётся недостоверным и к учёту дистанции не допускается."}, "ACC_MAX_FOR_FIX": {"value": 50, "unit": "м", "definition": "Параметр задаёт наибольшую допустимую погрешность позиции, при которой позиция признаётся пригодной (has_fix). При худшей точности позиция в тике не используется."}, "UI_ACC_THRESHOLD": {"value": 50, "unit": "м", "definition": "Параметр задаёт интерфейсный порог точности позиции. Намеренно отдельная константа от серверной проверки."}, "GNSS_FRESHNESS_MAX_SEC": {"value": 2, "unit": "с", "definition": "Параметр задаёт предельный возраст спутниковой позиции, при котором позиция признаётся пригодной для тика."}, "hold_timeout_sec": {"value": 5, "unit": "с", "definition": "Параметр задаёт предельную длительность удержания последней действительной оценки скорости при отсутствии измерений. По истечении предела оценке присваивается значение «отсутствует»; вымышленные значения не формируются."}, "V_STOP_MPS": {"value": 0.5, "unit": "м/с", "definition": "Параметр задаёт порог скорости для перехода в паузу: при значениях ниже порога фиксируется кандидат на паузу. Единая константа с порогом обнуления оценки скорости — два определения покоя не расходятся. Пара к V_RESUME_MPS (гистерезис)."}, "V_MOVE_MIN": {"value": 0.5, "unit": "м/с", "definition": "Параметр задаёт скорость, начиная с которой перемещение признаётся значимым в проверке передвижения на транспорте."}, "V_RESUME_MPS": {"value": 1, "unit": "м/с", "definition": "Параметр задаёт порог скорости для возврата из паузы в движение. Установлен вдвое выше порога паузы: разнесение порогов входа и выхода (гистерезис 2:1) исключает многократные переключения состояния при колебаниях скорости около границы."}, "k_stop": {"value": 3, "unit": "тиков", "definition": "Параметр задаёт число последовательных тиков без значимого перемещения для подтверждения остановки."}, "UI_PAUSE_MAX_SEC": {"value": 10, "unit": "с", "definition": "Параметр задаёт длительность отсутствия движения, по достижении которой экран переводится на ступень паузы."}, "UI_MOTION_THRESHOLD": {"value": 0.5, "unit": "м/с", "definition": "Параметр задаёт интерфейсный порог активного движения. Отдельная константа от серверного порога значимой скорости."}, "UI_LOSS_STOP_SEC": {"value": 30, "unit": "с", "definition": "Параметр задаёт длительность отсутствия сигнала, по достижении которой экран переводится на ступень остановки."}, "T_LOSS_STOP_SEC": {"value": 30, "unit": "с", "definition": "Параметр задаёт длительность потери сигнала, по достижении которой ступень экрана переводится в остановку записи."}, "LOST_MICRO_MAX_SEC": {"value": 5, "unit": "с", "definition": "Параметр задаёт длительность микропотери сигнала, перекрываемой удержанием оценки без смены состояния."}, "PAUSE_MAX_SEC": {"value": 300, "unit": "с", "definition": "Параметр задаёт предельную длительность короткой паузы; единая константа с порогом неподвижности завершения."}, "PAUSE_USER_MAX_SEC": {"value": 600, "unit": "с", "definition": "Параметр задаёт предельную длительность паузы, установленной пользователем. По достижении предела сессия завершается штатной финализацией с соответствующим кодом причины."}, "CADENCE_MIN_SPS": {"value": 0.5, "unit": "шаг/с", "definition": "Нижний предел частоты шага в проверке биомеханики. Частота ниже предела при наличии шагов — жёсткое отклонение тика."}, "CADENCE_MAX_SPS": {"value": 5, "unit": "шаг/с", "definition": "Верхний предел частоты шага в проверке биомеханики. Частота выше предела при наличии шагов — жёсткое отклонение тика."}, "SMA_STOP": {"value": 0.3, "unit": "м/с²", "definition": "Параметр задаёт амплитуду ускорений, ниже которой устройство расценивается как неподвижное."}, "IMU_MIN_SAMPLES_PER_TICK": {"value": 20, "unit": "шт", "definition": "Параметр задаёт наименьшее число отсчётов датчика движения за тик, при котором буфер признаётся исправным (imu_buffer_ok)."}, "ACTIVITY_MAX_AGE_SEC": {"value": 10, "unit": "с", "definition": "Параметр задаёт предельный возраст значения распознанной активности. Значение старше предела в проверках не используется."}, "S_MIN": {"value": 0.75, "unit": "(м/с)²", "definition": "Параметр задаёт нижнюю границу оценки разброса скорости в тесте статистического выброса. Назначение — исключить вырождение знаменателя при малом окне: без нижней границы допустимое отклонение обращается в ноль и любое измерение признаётся выбросом."}, "N_RESID_MIN": {"value": 1, "unit": "тиков", "definition": "Параметр задаёт наименьшее число тиков для применимости теста остатка."}, "CHI2_99_DF1": {"value": 6.635, "unit": "—", "definition": "Параметр задаёт критическое значение распределения хи-квадрат с одной степенью свободы на уровне 99 %: превышение означает статистически почти невероятное отклонение."}, "antifraud_window_sec": {"value": 10, "unit": "с", "definition": "Параметр задаёт длительность окна агрегации оконных проверок. Проверки реализуются в выключенном состоянии; включение предусмотрено к МВП2."}, "speed_monotonic_stddev_max": {"value": 0.3, "unit": "м/с", "definition": "Параметр задаёт нижний порог стандартного отклонения скорости по окну: меньшие значения означают равномерность, нехарактерную для естественного бега."}, "steps_shake_threshold": {"value": 5, "unit": "шаг", "definition": "Параметр задаёт число шагов по окну, начиная с которого при отсутствии смещения фиксируется тряска на месте."}, "d_min_displacement_for_steps": {"value": 0.5, "unit": "м", "definition": "Параметр задаёт минимальное смещение, соответствующее наличию шагов в окне; меньшие значения при шагах — признак тряски на месте."}, "d_significant_no_steps": {"value": 5, "unit": "м", "definition": "Параметр задаёт значимое смещение по окну; достижение смещения при нулевых шагах — признак переноса без бега."}, "BATCH_FLUSH_INTERVAL_SEC": {"value": 1, "unit": "с", "definition": "Параметр задаёт интервал отправки пакетов при доступной сети. При действующем значении пакет передаётся ежесекундно и при штатной записи содержит один тик."}, "BATCH_MAX_TICKS": {"value": 30, "unit": "шт", "definition": "Параметр задаёт наибольшее число тиков в одном пакете передачи. Отправка пакета выполняется по первому из двух событий: накоплен предельный объём либо истёк интервал отправки."}, "MAX_BATCH_TICKS": {"value": 60, "unit": "шт", "definition": "Параметр задаёт серверный предел числа тиков в запросе. Норматив: не менее клиентского предела пакета — серверная граница принимает клиентский максимум с запасом."}, "BATCH_TIMEOUT_SEC": {"value": 15, "unit": "с", "definition": "Параметр задаёт время ожидания подтверждения пакета; по истечении пакет признаётся недоставленным и переходит в цикл повторов."}, "RETRY_MAX_ATTEMPTS": {"value": 5, "unit": "шт", "definition": "Параметр задаёт число повторных отправок пакета до перевода партии в отложенную очередь."}, "DEFERRED_RETRY_INTERVAL_SEC": {"value": 60, "unit": "с", "definition": "Параметр задаёт интервал повторных попыток доотправки отложенных партий."}, "OFFLINE_BUFFER_MAX_TICKS": {"value": 3600, "unit": "тиков", "definition": "Параметр задаёт ёмкость буфера накопления при отсутствии сети; значение соответствует одному часу записи. При достижении ёмкости применяется политика остановки накопления."}, "ACK_LATENCY_THRESHOLD_MS": {"value": 300, "unit": "мс", "definition": "Параметр задаёт норматив длительности подтверждения пакета сервером. Превышение норматива фиксируется наблюдением; на приём пакета не влияет."}, "POLICY_ACTIVITY_VEHICLE": {"value": "HARD_DROP", "unit": "—", "definition": "Политика определяет последствие распознанной поездки на транспорте при значимой скорости: действующее значение — жёсткое отклонение тика."}, "POLICY_MOCK_DETECTION": {"value": "включено", "unit": "—", "definition": "Политика определяет применение потиковой проверки подменного поставщика геопозиции. Отключение выполняется одним значением без правки контракта."}, "POLICY_DROP_ON_CONF99_FALSE": {"value": "выключено", "unit": "—", "definition": "Политика определяет жёсткую ветвь статистического выброса. Во включённом состоянии выброс отклоняет тик; действующее состояние — выключено, выброс фиксируется кодом причины с сохранением допуска."}, "L_min": {"value": 0.3, "unit": "м/шаг", "definition": "Параметры задают нижний и верхний пределы длины шага человека в проверке биомеханики. Значения вне пределов при наличии шагов — жёсткое отклонение тика."}, "L_max": {"value": 2.5, "unit": "м/шаг", "definition": "Параметры задают нижний и верхний пределы длины шага человека в проверке биомеханики. Значения вне пределов при наличии шагов — жёсткое отклонение тика."}, "R_meas": {"value": 1.0, "unit": "(м/с)²", "definition": "Параметр задаёт дисперсию шума измерения скорости по источникам; в МВП0 применяется единое значение профиля источника. В симуляторе действует единое значение профиля МВП0 (1,0)."}, "Z1_V_MIN": {"value": 1.0, "unit": "м/с", "definition": "Нижний край первой зоны: открытое решение продукта — оплачивать ли темп ниже него. Ориентир 1,0 м/с; сетка читает значение из файла."}, "B1 (Z1/Z2)": {"value": 1.39, "unit": "м/с", "definition": "Граница Z1/Z2 — 5 км/ч (из строк Z1/Z2 реестра)."}, "B2 (Z2/Z3)": {"value": 2.78, "unit": "м/с", "definition": "Граница Z2/Z3 — 10 км/ч (из строк Z2/Z3 реестра)."}, "POLICY_WINDOW_ANTIFRAUD": {"value": "выключено", "unit": "—", "definition": "Политика определяет применение оконных проверок против синтетического движения. Проверки реализуются в выключенном состоянии; для точного антифрода на физиологии движения включение предусмотрено к МВП2. В реестре значение не задано; стартовое «выключено» — предложение слоя 9 для МВП0. Допустимо «включено»."}, "ENERGY_MAX": {"value": 20, "unit": "ед.", "definition": "Только симулятор, в эталоне параметра нет. Максимум энергии; списание 1/60 за засчитанный тик, пополнение 25% в 00/06/12/18 UTC."}};
 const CODES0={"ACTIVITY_CONFLICT_VEHICLE": {"level": "тик", "effect": "HARD_DROP", "condition": "Распознавание активности сообщает поездку при v_est не ниже V_MOVE_MIN (0,5 м/с); срок годности значения — ACTIVITY_MAX_AGE_SEC (10 с).", "status": "включено (политика POLICY_ACTIVITY_VEHICLE = HARD_DROP)"}, "ACTIVITY_SENSOR_UNAVAILABLE": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Служба распознавания активности недоступна.", "status": "включено"}, "BATCH_CONFIG_VERSION_MISMATCH": {"level": "пакет (транспорт)", "effect": "отказ пакета", "condition": "config_version отсутствует либо не совпадает с закреплённой при старте.", "status": "включено"}, "BATCH_PAYLOAD_INVALID": {"level": "пакет (транспорт)", "effect": "отказ пакета", "condition": "Нарушен контракт структуры: ticks[] отсутствует, не массив либо пуст. Отказ целиком — POLICY_INVALID_BATCH_HANDLING = REJECT_WHOLE.", "status": "включено"}, "BATCH_RETRY_VARIANT_RECORDED": {"level": "пакет (транспорт)", "effect": "журнал", "condition": "Для известной пары (session_id, client_logical_index) поступила новая транспортная версия; материал уходит на дедупликацию.", "status": "включено"}, "BATCH_SESSION_NOT_FOUND": {"level": "пакет (транспорт)", "effect": "отказ пакета", "condition": "session_id отсутствует в хранилище сессий.", "status": "включено"}, "BATCH_TICK_INDEX_COLLISION": {"level": "пакет (транспорт)", "effect": "журнал", "condition": "Внутри пакета более одного элемента с одним client_logical_index при полном совпадении содержимого: схлопывание до одного экземпляра с записью в журнал.", "status": "включено"}, "BATCH_TICK_MISSING_REQUIRED_FIELD": {"level": "пакет (транспорт)", "effect": "отказ пакета", "condition": "В тике отсутствует обязательное поле контракта RawTick; частичный приём выключен (POLICY_ALLOW_PARTIAL_ACCEPT = false).", "status": "включено"}, "BATCH_TICK_VERSION_CONFLICT": {"level": "пакет (транспорт)", "effect": "отказ пакета", "condition": "Для одного client_logical_index внутри пакета разные варианты RawTick.", "status": "включено"}, "BATCH_TOO_LARGE": {"level": "пакет (транспорт)", "effect": "отказ пакета", "condition": "Превышен серверный MAX_BATCH_TICKS (60) либо MAX_BATCH_PAYLOAD_SIZE (256 КБ).", "status": "включено"}, "CADENCE_OUT_OF_RANGE": {"level": "тик", "effect": "HARD_DROP", "condition": "Частота шагов вне диапазона CADENCE_MIN_SPS–CADENCE_MAX_SPS (0,5–5,0 шаг/с).", "status": "включено"}, "CONTENT_CONFLICT": {"level": "тик (приём)", "effect": "аудит", "condition": "Повтор ключа тика с иным содержимым; каноническим остаётся первый вариант (политика POLICY_DUPLICATE_CONTENT_CONFLICT), расхождение — в журнал tick_conflicts.", "status": "включено"}, "DISPLACEMENT_WITHOUT_STEPS": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Смещение по окну antifraud_window_sec (10 с) не меньше d_significant_no_steps (5 м) без шагов.", "status": "отложено: политика POLICY_WINDOW_ANTIFRAUD открыта у продукта (оконные проверки, фаза 2)"}, "GNSS_DATA_MISSING": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Пригодная геопозиция в секунде отсутствует: has_fix = false (пороги — ACC_MAX_FOR_FIX = 50 м, GNSS_FRESHNESS_MAX_SEC = 2 с).", "status": "включено"}, "IDEMPOTENCY_CONTENT_CONFLICT": {"level": "сессия", "effect": "отказ старта", "condition": "Повтор ключа попытки с иным содержимым запроса; расхождение журналируется.", "status": "включено"}, "IMU_BUFFER_INCOMPLETE": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Отсчёты датчиков движения пришли в неполном составе (меньше IMU_MIN_SAMPLES_PER_TICK = 20).", "status": "включено"}, "IMU_STREAM_MISSING": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Датчики движения не дали ни одного отсчёта за тик.", "status": "включено"}, "INNOVATION_OUTLIER_99": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Статистический выброс остатка скорости за порогом хи-квадрат 99% (CHI2_99_DF1 = 6,635); параметры знаменателя — R_meas и S_MIN, применимость — N_RESID_MIN.", "status": "включено; сброс достоверности — по политике POLICY_DROP_ON_CONF99_FALSE = выключено"}, "LATE_TICK_REJECTED": {"level": "тик (приём)", "effect": "отказ учёта тика", "condition": "Тик пришёл за пределами окна переупорядочивания REORDER_TIMEOUT_SEC (30 с); фиксируется как улика.", "status": "включено"}, "LOCATION_PERMISSION_MISSING": {"level": "сессия", "effect": "отказ старта", "condition": "Разрешение геолокации не выдано; старт запрещён без сетевых запросов (политика POLICY_REQUIRE_LOCATION_FOREGROUND = true).", "status": "включено"}, "LOCATION_SERVICE_DISABLED": {"level": "сессия", "effect": "отказ старта", "condition": "Разрешение выдано, системная служба геолокации выключена.", "status": "включено"}, "LOST_REENTRY_REJECTED": {"level": "тик", "effect": "отказ учёта тика", "condition": "Отказ возврата из потери: смещение сверх REENTRY_MAX_JUMP_M (v_max_human_mps × длительность потери); возврат отклонён, ложная дистанция не начислена.", "status": "включено (политика POLICY_LOST_RECOVERY_STRICT = включено)"}, "MOCK_LOCATION_DETECTED": {"level": "тик", "effect": "HARD_DROP", "condition": "Платформа сообщает подменного поставщика геопозиции: mock_location = true.", "status": "включено (политика POLICY_MOCK_DETECTION = включено)"}, "MOTION_SIGNATURE_MISSING": {"level": "тик", "effect": "HARD_DROP", "condition": "Перемещение при полном отсутствии подписи движения по датчикам: v_est не ниже V_MOVE_MIN (0,5 м/с), шагов нет при доступном шагомере, буфер датчиков полон, sma ниже SMA_STOP (0,3 м/с²).", "status": "включено"}, "NETWORK_UNAVAILABLE": {"level": "сессия", "effect": "отказ старта", "condition": "Сеть недоступна; офлайн-старт запрещён политикой POLICY_ALLOW_OFFLINE_START = false.", "status": "включено"}, "NO_DISTANCE_FOR_STRIDE_CHECK": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Шаги есть, дистанционная база для проверки длины шага отсутствует.", "status": "включено"}, "NO_SPEED_MEASUREMENT": {"level": "тик", "effect": "INFO (информационная пометка)", "condition": "Измерение скорости в тике отсутствует (meas_source = NONE).", "status": "включено; класс утверждён продуктом (вопрос 8)"}, "SESSION_ALREADY_ACTIVE": {"level": "сессия", "effect": "отказ старта", "condition": "У пользователя есть активная сессия; ответ содержит ссылку на действующую.", "status": "включено"}, "SESSION_STOPPED_BY_INACTIVITY": {"level": "сессия", "effect": "терминал", "condition": "Автозавершение при непрерывной неподвижности свыше T_STOP_SEC = 300 с; завершение необратимо.", "status": "включено"}, "SESSION_STOPPED_BY_LOSS": {"level": "сессия", "effect": "терминал", "condition": "Автозавершение по длительной потере наблюдаемости: серия потери превысила T_LOSS_STOP_SEC (30 с).", "status": "включено"}, "SESSION_STOPPED_BY_PAUSE_LIMIT": {"level": "сессия", "effect": "терминал", "condition": "Пользовательская пауза достигла предела PAUSE_USER_MAX_SEC (600 с): автозавершение штатной финализацией по доставленным тикам (принято по поручению аналитика, 24.09).", "status": "включено"}, "SESSION_STOPPED_BY_RELOGIN": {"level": "сессия", "effect": "терминал", "condition": "Автозавершение при повторной авторизации пользователя: новое устройство в приоритете, итог — по доставленным тикам.", "status": "включено"}, "SESSION_STOPPED_BY_USER": {"level": "сессия", "effect": "терминал", "condition": "Завершение по команде пользователя: штатная финализация по доставленным тикам; транспорт команды — решение В-1.", "status": "включено (транспорт команды закрыт 24.09)"}, "SPEED_ESTIMATE_HELD": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Оценка скорости получена удержанием прежней (quality_status = HOLD), не дольше hold_timeout_sec (5 с); допуск сохраняется, качество снижено.", "status": "включено"}, "SPEED_TOO_MONOTONIC": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Слишком ровная скорость по окну antifraud_window_sec (10 с): стандартное отклонение ниже speed_monotonic_stddev_max (0,3 м/с).", "status": "отложено: политика POLICY_WINDOW_ANTIFRAUD открыта у продукта (оконные проверки, фаза 2)"}, "STALE_ADMISSION_SNAPSHOT": {"level": "сессия", "effect": "отказ старта", "condition": "Снимок допуска несогласован с фактическим составом запроса либо состоянием разрешений; выполняется пересбор и повтор. Проверка возраста снимка не выполняется.", "status": "включено; условие — несогласованность (Эпик 6, задача 6.3)"}, "START_RESPONSE_TIMEOUT": {"level": "сессия", "effect": "отказ старта", "condition": "Ответ регистрации не получен за START_RESPONSE_TIMEOUT_SEC (15 с) либо сервер вернул ошибку.", "status": "включено"}, "STEPCOUNTER_ANOMALY": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Отрицательное или аномальное приращение счётчика шагов; значение шагов тика отсутствует.", "status": "включено"}, "STEPS_SENSOR_UNAVAILABLE": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Шагомер недоступен на устройстве либо не выдаёт значения.", "status": "включено"}, "STEPS_WITHOUT_DISPLACEMENT": {"level": "тик", "effect": "SOFT_DEGRADE", "condition": "Шагов по окну antifraud_window_sec (10 с) не меньше steps_shake_threshold (5) при смещении меньше d_min_displacement_for_steps (0,5 м).", "status": "отложено: политика POLICY_WINDOW_ANTIFRAUD открыта у продукта (оконные проверки, фаза 2)"}, "STRIDE_OUT_OF_RANGE": {"level": "тик", "effect": "HARD_DROP", "condition": "Длина шага вне диапазона L_min–L_max (0,3–2,5 м/шаг) при наличии шагов.", "status": "включено"}, "TICK_CANONICAL_ENRICHED": {"level": "дедупликация (техника)", "effect": "не используется в МВП0", "condition": "Обогащение канона; только при значении ENRICH_IF_COMPATIBLE политики POLICY_DUPLICATE_COMPLETENESS_RESOLUTION в будущих версиях.", "status": "выключено"}, "TICK_DUPLICATE_COMPLEMENTARY": {"level": "дедупликация (техника)", "effect": "журнал", "condition": "Повтор не противоречит канону, но содержит ранее отсутствовавшие данные; версия в журнал версий, канон неизменен (POLICY_DUPLICATE_COMPLETENESS_RESOLUTION = KEEP_FIRST_CANONICAL).", "status": "включено"}, "TICK_DUPLICATE_CONFLICT": {"level": "дедупликация (техника)", "effect": "журнал", "condition": "Повтор ключа с иным содержимым; первая запись осталась канонической (POLICY_DUPLICATE_CONTENT_CONFLICT).", "status": "включено"}, "TICK_DUPLICATE_DETECTED": {"level": "дедупликация (техника)", "effect": "журнал", "condition": "Запись с тем же ключом уже существует: повтор не создаёт запись и не запускает обработку.", "status": "включено; след — счётчик точных повторов (POLICY_LOG_DUPLICATES = выключено)"}, "TICK_STORE_WRITE_FAILED": {"level": "дедупликация (техника)", "effect": "инцидент", "condition": "Новый тик признан новым, запись в хранилище не зафиксирована; серверная гарантия повтора до успеха обязательна (подтверждение приёма выдаётся после фиксации — решение Н-1).", "status": "включено"}, "VELOCITY_ABOVE_HUMAN_CAP": {"level": "тик", "effect": "HARD_DROP", "condition": "Скорость выше физического предела: v_est больше v_max_human_mps (8 м/с).", "status": "включено"}};
-const USED_CODES=['CADENCE_OUT_OF_RANGE','VELOCITY_ABOVE_HUMAN_CAP','ACTIVITY_CONFLICT_VEHICLE','STRIDE_OUT_OF_RANGE','MOCK_LOCATION_DETECTED','MOTION_SIGNATURE_MISSING','INNOVATION_OUTLIER_99','SPEED_TOO_MONOTONIC','STEPS_WITHOUT_DISPLACEMENT','DISPLACEMENT_WITHOUT_STEPS','NO_DISTANCE_FOR_STRIDE_CHECK','NO_SPEED_MEASUREMENT','SPEED_ESTIMATE_HELD','GNSS_DATA_MISSING','SESSION_STOPPED_BY_LOSS','SESSION_STOPPED_BY_PAUSE_LIMIT','TICK_DUPLICATE_DETECTED','BATCH_TOO_LARGE','BATCH_PAYLOAD_INVALID','NETWORK_UNAVAILABLE','START_RESPONSE_TIMEOUT'];
+const USED_CODES=['CADENCE_OUT_OF_RANGE','VELOCITY_ABOVE_HUMAN_CAP','ACTIVITY_CONFLICT_VEHICLE','STRIDE_OUT_OF_RANGE','MOCK_LOCATION_DETECTED','MOTION_SIGNATURE_MISSING','INNOVATION_OUTLIER_99','SPEED_TOO_MONOTONIC','STEPS_WITHOUT_DISPLACEMENT','DISPLACEMENT_WITHOUT_STEPS','NO_DISTANCE_FOR_STRIDE_CHECK','NO_SPEED_MEASUREMENT','SPEED_ESTIMATE_HELD','GNSS_DATA_MISSING','SESSION_STOPPED_BY_LOSS','SESSION_STOPPED_BY_INACTIVITY','SESSION_STOPPED_BY_PAUSE_LIMIT','TICK_DUPLICATE_DETECTED','BATCH_TOO_LARGE','BATCH_PAYLOAD_INVALID','NETWORK_UNAVAILABLE','START_RESPONSE_TIMEOUT'];
 /* группы конфигов; * — влияет на симулятор */
 const GROUPS=[
  ['Сигнал и скорость',['window_size*','v_max_human_mps*','ACC_MAX_FOR_FIX*','UI_ACC_THRESHOLD*','GNSS_FRESHNESS_MAX_SEC*','hold_timeout_sec*','V_STOP_MPS*','V_MOVE_MIN*','V_RESUME_MPS*']],
- ['Состояния сессии',['k_stop*','UI_PAUSE_MAX_SEC*','UI_MOTION_THRESHOLD*','UI_LOSS_STOP_SEC*','T_LOSS_STOP_SEC*','LOST_MICRO_MAX_SEC*','PAUSE_MAX_SEC*']],
+ ['Состояния сессии',['k_stop*','UI_PAUSE_MAX_SEC*','UI_MOTION_THRESHOLD*','UI_LOSS_STOP_SEC*','T_LOSS_STOP_SEC*','LOST_MICRO_MAX_SEC*','PAUSE_MAX_SEC*','PAUSE_USER_MAX_SEC*']],
  ['Антифрод: тик',['CADENCE_MIN_SPS*','CADENCE_MAX_SPS*','L_min*','L_max*','SMA_STOP*','IMU_MIN_SAMPLES_PER_TICK*','POLICY_ACTIVITY_VEHICLE*','ACTIVITY_MAX_AGE_SEC*','POLICY_MOCK_DETECTION*']],
  ['Антифрод: тест остатка',['R_meas*','S_MIN*','N_RESID_MIN*','CHI2_99_DF1*','POLICY_DROP_ON_CONF99_FALSE*']],
  ['Антифрод: окно (выключено в МВП0)',['POLICY_WINDOW_ANTIFRAUD*','antifraud_window_sec*','speed_monotonic_stddev_max*','steps_shake_threshold*','d_min_displacement_for_steps*','d_significant_no_steps*']],
@@ -472,7 +613,7 @@ const SCEN={
   segs:[{d:45,v:2.6},{d:40,v:2.6,env:'tunnel'},{d:20,v:2.6}]},
  canyon:{name:'Каньон домов',env:'canyon',expect:['INNOVATION_OUTLIER_99','GNSS_DATA_MISSING','SPEED_ESTIMATE_HELD'],desc:'Бег 2,6 м/с при тяжёлых помехах: скачки позиции, выпадения фикса. Сравни приоритет OS_SPEED и GPS_DELTA.',
   segs:[{d:10,v:0,v2:2.6},{d:180,v:2.6},{d:10,v:2.6,v2:0},{d:5,v:0}]},
- bus:{name:'Поездка на автобусе',env:'city',expect:['ACTIVITY_CONFLICT_VEHICLE','MOTION_SIGNATURE_MISSING'],desc:'Ходьба, затем 60 с поездки (5 м/с, без шагов, активность AUTOMOTIVE), снова ходьба.',
+ bus:{name:'Поездка на автобусе',env:'city',expect:['ACTIVITY_CONFLICT_VEHICLE','MOTION_SIGNATURE_MISSING'],desc:'Ходьба, затем 60 с поездки (5 м/с, без шагов, активность VEHICLE), снова ходьба.',
   segs:[{d:20,v:1.4},{d:60,v:5,veh:true},{d:25,v:1.4},{d:8,v:1.4,v2:0},{d:5,v:0}]},
  car:{name:'Поездка на машине',env:'open',expect:['VELOCITY_ABOVE_HUMAN_CAP','ACTIVITY_CONFLICT_VEHICLE','MOTION_SIGNATURE_MISSING'],desc:'14 м/с без шагов: выше v_max_human_mps.',
   segs:[{d:20,v:1.4},{d:45,v:14,veh:true},{d:20,v:1.4},{d:5,v:0}]},
@@ -651,7 +792,7 @@ resetNet(1);
 function sched(at,fn){ NET.events.push({at,fn,seq:++NET.seq}); NET.events.sort((a,b)=>a.at-b.at||a.seq-b.seq); }
 function netTick(){ while(NET.events.length&&NET.events[0].at<=vclock){ const e=NET.events.shift(); e.fn(e.at); } }
 
-function newSrv(sid){ SRV={sid,stopped:false,stopReason:null,store:new Set(),ticks:[],byN:new Map(),hist:[],nBefore:0,lastValidV:null,lastGood:null,loss:0,calm:0,pauseSec:0,state:'idle',
+function newSrv(sid){ SRV={sid,stopped:false,stopReason:null,store:new Set(),ticks:[],byN:new Map(),hist:[],nBefore:0,lastValidV:null,lastGood:null,loss:0,calm:0,pauseSec:0,puSec:0,state:'idle',
   wv:[],ws:[],wp:[],lastVest:null,batches:0,dups:0,afterStop:0,zeroNow:false}; }
 
 /* ----- клиентская отправка ----- */
@@ -717,7 +858,7 @@ function srvTick(r,at){
   if(hasFix){ if(fx.speed!=null&&fx.speed>=0)vOs=fx.speed;
     if(S.lastGood&&fx.id!==S.lastGood.id){ const dt=fx.ts-S.lastGood.ts; if(dt>0&&dt<=cv('GNSS_FRESHNESS_MAX_SEC'))vD=haversine(S.lastGood,fx)/dt; }
     S.lastGood={lat:fx.lat,lon:fx.lon,id:fx.id,ts:fx.ts}; } else S.lastGood=null;
-  const [vm,src]=pickMeas(vOs,vD); out.src=src; out.vmeas=vm;
+  const [vm,src]=pickMeas(vOs,vD); out.src=src; out.vmeas=vm; out.vOs=vOs; out.vD=vD; out.hasFix=hasFix;
   if(vm==null)S.loss++; else S.loss=0;
   const w=Math.max(1,Math.round(cv('window_size'))||1);
   // слой 9, коридор 4: тест остатка скорости (адаптация МВП0)
@@ -728,6 +869,7 @@ function srvTick(r,at){
   let ve=null,held=false;
   if(vm!=null){ S.hist.push(vm); if(S.hist.length>200)S.hist.shift(); ve=mavg(S.hist,w); S.nBefore++; }
   else if(S.lastValidV!=null&&S.loss<=cv('hold_timeout_sec')){ ve=S.lastValidV; held=true; out.soft.push('SPEED_ESTIMATE_HELD'); }
+  out.vsm=ve; out.w=w;
   if(ve!=null&&ve<cv('V_STOP_MPS'))ve=0;
   if(ve!=null&&!held)S.lastValidV=ve;
   if(vm==null)out.info.push('NO_SPEED_MEASUREMENT');
@@ -745,7 +887,9 @@ function srvTick(r,at){
   else if(prev==='pause'){ st=(ve!=null&&ve>=cv('V_RESUME_MPS'))?'run':'pause'; }
   else { if(ve!=null){ if(ve<cv('V_STOP_MPS'))S.calm++; else S.calm=0; } st=S.calm>=cv('k_stop')?'pause':'run'; }
   if(st==='pause')S.pauseSec++; else S.pauseSec=0;
-  if(st!=='stop'&&S.pauseSec>=cv('PAUSE_MAX_SEC')){ st='stop'; stopReason='SESSION_STOPPED_BY_PAUSE_LIMIT'; }
+  if(st==='pause_user')S.puSec++; else S.puSec=0;
+  if(st!=='stop'&&S.pauseSec>=cv('PAUSE_MAX_SEC')){ st='stop'; stopReason='SESSION_STOPPED_BY_INACTIVITY'; }          // T_STOP_SEC = PAUSE_MAX_SEC
+  else if(st==='pause_user'&&S.puSec>=cv('PAUSE_USER_MAX_SEC')){ st='stop'; stopReason='SESSION_STOPPED_BY_PAUSE_LIMIT'; }   // предел пользовательской паузы
   if(st==='run'&&prev!=='run'&&prev!=='idle'){ S.hist=[]; S.nBefore=0; S.calm=0; }   // window_reset_signal
   if(st==='lost'||st==='pause_user')S.calm=0;
   // слой 9: проверки тика (только в RUN)
@@ -783,7 +927,7 @@ function srvTick(r,at){
 /* ===== интерфейс: сессия, отрисовка, консоль, итоги ===== */
 const SP={scn:'walk',env:'auto',inten:1,seed:1234};
 let timer=null,rate=1,FROZEN=false,QUIET=false,REPLAY=null,AB={A:null};
-let ACTIVE_TAB='app';
+let ACTIVE_TAB='run';
 const STATE_LBL={run:['RUN','b-run'],lost:['LOST','b-lost'],stop:['STOP','b-stop'],pause:['ПАУЗА','b-pause'],pause_user:['ПАУЗА · польз.','b-pause'],idle:['—','b-idle']};
 
 /* ---------- источник и жизненный цикл сессии ---------- */
@@ -817,7 +961,7 @@ function stepOnce(){
   if(MODE!=='replay')REC.samples.push(recSample(s));
   clientProcess(s); clientFlush(); clockAdvance(1000); netTick();
   if(C.state==='stop'){ endSession('Сессия завершена: экран в STOP (нет сигнала дольше UI_LOSS_STOP_SEC)','bad'); return false; }
-  if(SRV&&SRV.stopped&&SRV.stopReason==='SESSION_STOPPED_BY_PAUSE_LIMIT'){ endSession('Сервер завершил сессию: '+SRV.stopReason,'bad'); return false; }
+  if(SRV&&SRV.stopped&&/^SESSION_STOPPED_BY_(INACTIVITY|PAUSE_LIMIT)$/.test(SRV.stopReason)){ endSession('Сервер завершил сессию: '+SRV.stopReason,'bad'); return false; }
   return true; }
 function tickLoop(){ if(FROZEN)return; stepOnce(); if(!QUIET)render(); }
 function drainNet(maxSec){ if(!NET.online||NET.serverDown)return; for(let k=0;k<maxSec&&(NET.queue.length||NET.inflight||NET.retry||NET.deferred.length);k++){ clockAdvance(1000); clientFlush(); netTick(); } }
@@ -826,7 +970,7 @@ function runInstant(){
   const go=()=>{ if(!RUNNING){ return; } clearInterval(timer);timer=null; QUIET=true; let n=0; while(n<5000&&RUNNING&&stepOnce())n++; drainNet(1200); QUIET=false; if(RUNNING)endSession('Прогон завершён'); else render(); toast('Прогон завершён: '+C.n+' тиков, на сервере '+(SRV?SRV.ticks.length:0),''); };
   if(!RUNNING){ start().then(go); } else go(); }
 /* фоновая работа сети, когда сессия не идёт (досылка, повторы, пополнение энергии) */
-setInterval(()=>{ if(FROZEN||RUNNING)return; clockAdvance(1000); clientFlush(); netTick(); if(NET.queue.length||NET.inflight||NET.retry||NET.deferred.length||ACTIVE_TAB==='con'||ACTIVE_TAB==='app'||ACTIVE_TAB==='srv')renderLight(); },1000);
+setInterval(()=>{ if(FROZEN||RUNNING)return; clockAdvance(1000); clientFlush(); netTick(); if(NET.queue.length||NET.inflight||NET.retry||NET.deferred.length||ACTIVE_TAB!=='res')renderLight(); },1000);
 
 /* ---------- отрисовка ---------- */
 function fmt(v){ return (v==null||isNaN(v))?'—':v.toFixed(2); }
@@ -853,13 +997,12 @@ function renderDelivery(){
   else if(NET.serverDown){ dl.textContent='сервер отвечает 5xx · повторы'; dl.className='m bad'; }
   else if(NET.inflight){ dl.textContent='отправка пакета №'+NET.inflight.batch.no+(NET.inflight.batch.attempt>1?' · попытка '+NET.inflight.batch.attempt:''); dl.className='m warnc'; }
   else if(NET.retry){ dl.textContent='повтор пакета №'+NET.retry.no; dl.className='m warnc'; }
-  else if(def){ dl.textContent='отложено пакетов: '+def; dl.className='m warnc'; }
-  else if(pend){ dl.textContent='очередь'; dl.className='m warnc'; }
+  else if(def){ dl.textContent='отложено пакетов: '+def; dl.className='m warnc'; }  else if(pend){ dl.textContent='очередь'; dl.className='m warnc'; }
   else { dl.textContent=C.n?'всё доставлено':'—'; dl.className='m '+(C.n?'good':''); }
   $('dlvS').textContent='флаш раз в '+cv('BATCH_FLUSH_INTERVAL_SEC')+' с, до '+cv('BATCH_MAX_TICKS')+' тиков · таймаут '+cv('BATCH_TIMEOUT_SEC')+' с · повторов '+cv('RETRY_MAX_ATTEMPTS');
   const inq=pend+(NET.inflight?NET.inflight.batch.ticks.length:0)+(NET.retry?NET.retry.ticks.length:0)+NET.deferred.reduce((a,b)=>a+b.ticks.length,0);
   $('buf').textContent=inq; $('bufMax').textContent=cv('OFFLINE_BUFFER_MAX_TICKS'); $('sent').textContent=NET.st.ticksAcked; $('batchNo').textContent=NET.batchNo; }
-function renderLight(){ renderEnergy(); renderDelivery(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
+function renderLight(){ renderEnergy(); renderDelivery(); renderRunHint(); if(ACTIVE_TAB==='dec')renderDecision(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
 function render(){
   if(QUIET)return;
   const r=ROWS.length?ROWS[ROWS.length-1]:null;
@@ -892,11 +1035,60 @@ function render(){
     else if(o.hard.length){ verd.textContent='✕ отклонён'; verd.className='m bad'; }
     else if(o.noest){ verd.textContent='нет оценки скорости'; verd.className='m warnc'; }
     else { verd.textContent=o.depleted?'✓ засчитан · энергия 0':'✓ засчитан'; verd.className='m '+(o.depleted?'warnc':'good'); }
-    $('verdS').innerHTML='тик №'+o.n+' · '+chips(o); $('zoneBig').textContent=o.accepted?ZNAMES[o.zone]:'—';
+    $('verdS').innerHTML='тик №'+o.n+' · '+chips(o); $('zoneBig').textContent=o.accepted?'Z'+o.zone:'—'; $('zoneS').textContent=o.accepted?ZNAMES[o.zone].split(' · ')[1]:'официально, только RUN';
     $('offStrip').innerHTML='Официально (сервер): <b>'+fmt(o.vest)+' м/с</b> · '+(STATE_LBL[o.state]||STATE_LBL.idle)[0]+' · '+(o.accepted?'<span class="good">засчитан</span>':(o.hard.length?'<span class="bad">отклонён</span>':'не засчитан'))+' · отстаёт от экрана на '+Math.max(0,C.n-o.n)+' с'; }
   else { $('offStrip').textContent='Официально (сервер): ожидает первый пакет'; }
-  renderEnergy(); renderDelivery(); drawChart(); renderLog();
-  if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
+  renderEnergy(); renderDelivery(); renderRunHint(); drawChart(); renderLog();
+  if(ACTIVE_TAB==='dec')renderDecision(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
+
+/* ---------- экран «Решение» ---------- */
+function rowByN(n){ for(let i=ROWS.length-1;i>=0&&i>ROWS.length-300;i--)if(ROWS[i].n===n)return ROWS[i]; return null; }
+function verdOf(o){ if(o.state!=='run')return ['не в RUN · '+(STATE_LBL[o.state]||STATE_LBL.idle)[0],'mut'];
+  if(o.hard.length)return ['✕ отклонён','bad']; if(o.noest)return ['нет оценки скорости','warnc']; return ['✓ засчитан','good']; }
+function sgn(x){ return (x>=0?'+':'−')+Math.abs(x).toFixed(2); }
+function codeWhy(c){ const d=(CODES[c]||{}).condition; return '<b>'+c+'</b>'+(d?' — '+esc(d):''); }
+function renderDecision(){
+  const o=lastOff(); if(!o){ return; }
+  const r=rowByN(o.n), fx=r&&r.payload?r.payload.fix:null;
+  $('decTick').textContent='Тик №'+o.n+' · последний тик, принятый сервером';
+  // 1. ядро
+  $('dcV').textContent=o.vOs==null?'—':o.vOs.toFixed(2);
+  const core=[]; core.push(o.vOs==null?(fx?'ядро скорость не передало':'нет фикса геопозиции'):'OS_SPEED от ядра ОС');
+  core.push('по смещению координат (GPS_DELTA): '+(o.vD==null?'—':o.vD.toFixed(2)+' м/с'));
+  if(fx)core.push('точность ±'+fx.acc.toFixed(0)+' м'+((fx.age||0)>0?' · возраст фикса '+fx.age+' с':'')); else core.push('точность —');
+  $('dcS').innerHTML=core.join('<br>');
+  // 2. сервер
+  const v=verdOf(o); $('dsV').textContent=o.vest==null?'—':o.vest.toFixed(2);
+  $('dsZ').textContent=o.accepted?ZNAMES[o.zone].split(' · ')[0]:'';
+  $('dsVerd').textContent=v[0]; $('dsVerd').className='dverd '+v[1];
+  $('dsS').innerHTML='состояние сервера: <b>'+(STATE_LBL[o.state]||STATE_LBL.idle)[0]+'</b>'+(o.accepted?' · '+ZNAMES[o.zone].split(' · ')[1]:'');
+  // 3. отклонение
+  if(o.vest!=null&&o.vOs!=null){ const d=o.vest-o.vOs; $('ddV').innerHTML=(Math.abs(d)<0.005?'совпадает':sgn(d)+' <span class="du">м/с</span>')+(o.vOs>0.05&&Math.abs(d)>=0.005?'<span class="dzone">'+(d>=0?'+':'−')+Math.abs(d/o.vOs*100).toFixed(0)+' %</span>':'');
+    $('ddS').textContent='официально '+o.vest.toFixed(2)+' − ядро '+o.vOs.toFixed(2); }
+  else if(o.vest!=null){ $('ddV').textContent='нет сравнения'; $('ddS').textContent='у ядра нет скорости; официальная '+o.vest.toFixed(2)+' м/с построена без неё'; }
+  else { $('ddV').textContent='—'; $('ddS').textContent='сервер не выдал официальную скорость'; }
+  // 4. причина
+  let main,why=[];
+  if(o.hard.length)main='Тик отклонён: '+o.hard.join(', ');
+  else if(o.state!=='run')main='Сервер в состоянии '+(STATE_LBL[o.state]||STATE_LBL.idle)[0]+': тик в зоны не идёт';
+  else if(o.noest)main='Оценки скорости нет: тик не засчитан и не отклонён';
+  else main='Засчитан в зону '+ZNAMES[o.zone]+' по официальной скорости '+o.vest.toFixed(2)+' м/с';
+  $('drMain').textContent=main;
+  const srcT={OS_SPEED:'Сервер взял скорость телефона (OS_SPEED).',
+    GPS_DELTA:(P.src==='delta'?'Выбран приоритет расчёта по смещению координат: скорость телефона не использована (GPS_DELTA).':'Скорости телефона в тике нет: сервер посчитал её по смещению координат (GPS_DELTA).'),
+    NONE:'Измерения скорости нет ни от телефона, ни по координатам.'}[o.src];
+  $('drSrc').textContent=srcT||'';
+  if(o.held)why.push('Измерения нет, удержана последняя оценка '+(o.vest==null?'':o.vest.toFixed(2)+' м/с')+' (SPEED_ESTIMATE_HELD, не дольше hold_timeout_sec = '+cv('hold_timeout_sec')+' с).');
+  else if(o.vmeas!=null){ if(o.w>1&&o.vsm!=null&&Math.abs(o.vsm-o.vmeas)>=0.005)why.push('Официальная скорость — среднее по окну из '+o.w+' тиков: измерение '+o.vmeas.toFixed(2)+' → '+o.vsm.toFixed(2)+' м/с.'); else if(o.w>1)why.push('Окно из '+o.w+' тиков: среднее совпало с измерением.'); else why.push('Окно 1 тик: сглаживания нет.'); }
+  if(o.vsm!=null&&o.vsm>0&&o.vest===0)why.push('Среднее '+o.vsm.toFixed(2)+' м/с ниже V_STOP_MPS ('+cv('V_STOP_MPS')+' м/с): скорость обнулена.');
+  if(!o.hasFix)why.push('Фикс геопозиции не принят сервером (точность хуже ACC_MAX_FOR_FIX или устарел): GNSS_DATA_MISSING.');
+  o.hard.forEach(c=>why.push('Отклонение: '+codeWhy(c)));
+  (o.soft||[]).filter(c=>c!=='SPEED_ESTIMATE_HELD'&&c!=='GNSS_DATA_MISSING').forEach(c=>why.push('Пометка (тик засчитан): '+codeWhy(c)));
+  if(o.drained)why.push('Списана энергия: 1/60 за засчитанный тик.');
+  $('drList').innerHTML=why.map(x=>'<li>'+x+'</li>').join('');
+  // таблица
+  $('decBody').innerHTML=SRV.ticks.slice(-12).reverse().map(t=>{ const vv=verdOf(t); const d=(t.vest!=null&&t.vOs!=null)?sgn(t.vest-t.vOs):'—';
+    return '<tr><td class="num">'+t.n+'</td><td class="num">'+fmt(t.vOs)+'</td><td class="num">'+fmt(t.vest)+'</td><td class="num">'+d+'</td><td class="'+vv[1]+'">'+esc(vv[0])+(t.hard.length?' · '+esc(t.hard[0]):'')+'</td></tr>'; }).join(''); }
 function renderLog(){ if(!$('logBox').open)return;
   $('logBody').innerHTML=ROWS.slice(-30).reverse().map(t=>{ const o=t.off; return '<tr><td class="num">'+t.n+'</td><td class="v">'+hhmmss(t.t)+'</td><td class="num">'+(t.v1==null?'—':t.v1.toFixed(2))+'</td><td>'+t.src+'</td><td class="num">'+t.cad.toFixed(1)+'</td><td>'+(STATE_LBL[t.state]||STATE_LBL.idle)[0]+'</td><td>'+(o?(STATE_LBL[o.state]||STATE_LBL.idle)[0]:'—')+'</td><td class="num">'+(o?fmt(o.vest):'—')+'</td><td>'+(o?chips(o):'<span class="ri">ещё не на сервере</span>')+'</td><td>'+(o&&o.zone!=null?'Z'+o.zone:'—')+'</td><td class="num">'+(o?o.energy.toFixed(2)+(o.depleted?' ⚠':''):'—')+'</td><td>'+t.batch+'</td></tr>'; }).join(''); }
 $('logBox').addEventListener('toggle',renderLog);
@@ -924,9 +1116,9 @@ function resetUi(){
   $('gv').textContent='0.0';$('gvk').textContent='0.0 км/ч · экран, окно 1';$('arcFill').setAttribute('stroke-dashoffset',100);
   ['nW1','nCore','nW2'].forEach(i=>{$(i).style.display='';$(i).setAttribute('transform','rotate(-90 150 150)');});
   ['fsm','fsmSrv','mFsm'].forEach(i=>{$(i).textContent='—';$(i).className='badge b-idle';});
-  $('act').textContent='—';$('actS').textContent='—';$('verd').textContent='—';$('verd').className='m';$('verdS').textContent='коды причин';$('zoneBig').textContent='—';
+  $('act').textContent='—';$('actS').textContent='—';$('verd').textContent='—';$('verd').className='m';$('verdS').textContent='коды причин';$('zoneBig').textContent='—';$('zoneS').textContent='официально, только RUN';
   $('accTxt').textContent='±— м';$('logBody').innerHTML='';$('offStrip').textContent='Официально (сервер): —';$('pause').textContent='⏸ Пауза';
-  renderDelivery(); renderEnergy(); drawChart(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
+  renderDelivery(); renderEnergy(); drawChart(); if(ACTIVE_TAB==='dec')renderDecision(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
 
 /* ---------- сервер (вкладка) ---------- */
 function renderSrv(){
@@ -984,7 +1176,7 @@ $('recLoad').onclick=()=>$('recFile').click();
 $('recFile').onchange=e=>{ const f=e.target.files[0]; if(!f)return; const rd=new FileReader();
   rd.onload=()=>{ try{ const j=JSON.parse(rd.result); if(!j||!Array.isArray(j.samples)||!j.samples.length)throw new Error('нет samples'); REPLAY={samples:j.samples,meta:j.meta||{},cfg:j.cfg||null,name:f.name}; renderRecInfo(); toast('Запись загружена: '+j.samples.length+' тиков',''); }catch(err){ toast('Запись не разобрана: '+err.message,'bad'); } };
   rd.readAsText(f,'utf-8'); e.target.value=''; };
-function renderRecInfo(){ const r=REPLAY||(REC.samples.length?{samples:REC.samples,meta:REC.meta,name:'последняя сессия'}:null);
+function renderRecInfo(){ if(typeof updateChip==='function')updateChip(); const r=REPLAY||(REC.samples.length?{samples:REC.samples,meta:REC.meta,name:'последняя сессия'}:null);
   $('recInfo').textContent=r?('Источник: '+(r.name||'запись')+' · '+r.samples.length+' тиков'+(r.meta&&r.meta.mode?' · записано в режиме «'+r.meta.mode+'»':'')+'. Старт прогонит эти тики через конвейер с текущими конфигами.'):'Запись — это входные данные датчиков: те же тики можно прогонять через конвейер при разных конфигах. Пока записи нет: проведи сессию или загрузи файл.'; }
 
 /* ---------- реальные датчики: панель ---------- */
@@ -998,7 +1190,7 @@ $('realThr').oninput=()=>{ const v=parseFloat($('realThr').value); if(isFinite(v
 
 /* ---------- элементы управления ---------- */
 function segSel(id,cb){ $(id).onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$(id).children].forEach(x=>x.classList.remove('on'));b.classList.add('on');cb(b);}; }
-function setMode(m){ MODE=m; $('scenRow').hidden=(m!=='scen'); $('replayRow').hidden=(m!=='replay'); $('realBox').hidden=(m!=='real'); $('trueLeg').style.display=(m==='real')?'none':'inline-flex';
+function setMode(m){ MODE=m; updateChip(); renderRunHint(); $('scenRow').hidden=(m!=='scen'); $('replayRow').hidden=(m!=='replay'); $('realBox').hidden=(m!=='real'); $('trueLeg').style.display=(m==='real')?'none':'inline-flex';
   [...$('mode').children].forEach(b=>b.classList.toggle('on',b.dataset.m===m)); if(m==='real')renderRealBox(); if(m==='replay')renderRecInfo(); }
 segSel('mode',b=>{ if(RUNNING)endSession(''); resetSession(); setMode(b.dataset.m); });
 segSel('rate',b=>{ rate=+b.dataset.r; if(timer){clearInterval(timer);timer=setInterval(tickLoop,Math.round(1000/(MODE==='real'?1:rate)));} });
@@ -1006,7 +1198,7 @@ function fillSelects(){
   $('selScen').innerHTML=Object.keys(SCEN).map(k=>'<option value="'+k+'">'+SCEN[k].name+'</option>').join('');
   $('selEnv').innerHTML='<option value="auto">по сценарию</option>'+Object.keys(ENV).filter(k=>k!=='tunnel').map(k=>'<option value="'+k+'">'+ENV[k].name+'</option>').join('');
   $('selNet').innerHTML=Object.keys(NET_PRESETS).map(k=>'<option value="'+k+'">Сеть: '+NET_PRESETS[k].n+'</option>').join('')+'<option value="custom">Сеть: своя</option>'; }
-function showScen(){ const sc=SCEN[SP.scn]; $('scenDesc').innerHTML=esc(sc.desc)+' <span class="mut">Длительность '+scenTotal(sc)+' с · ожидаемые коды:</span> '+sc.expect.map(c=>'<span class="'+(/^[A-Z_0-9]+$/.test(c)?'rs':'ri')+'">'+esc(c)+'</span>').join(' · '); }
+function showScen(){ const sc=SCEN[SP.scn]; if(typeof updateChip==='function')updateChip(); $('scenDesc').innerHTML=esc(sc.desc)+' <span class="mut">Длительность '+scenTotal(sc)+' с · ожидаемые коды:</span> '+sc.expect.map(c=>'<span class="'+(/^[A-Z_0-9]+$/.test(c)?'rs':'ri')+'">'+esc(c)+'</span>').join(' · '); }
 $('selScen').onchange=()=>{ SP.scn=$('selScen').value; showScen(); };
 $('selEnv').onchange=()=>{ SP.env=$('selEnv').value; };
 $('seed').oninput=()=>{ SP.seed=parseInt($('seed').value)||1; };
@@ -1023,12 +1215,31 @@ $('start').onclick=()=>start(); $('instant').onclick=runInstant; $('reset').oncl
 $('pause').onclick=()=>{ if(!RUNNING)return; C.userPause=!C.userPause; $('pause').textContent=C.userPause?'▶ Продолжить':'⏸ Пауза'; };
 $('stop').onclick=()=>{ if(RUNNING)endSession('Сессия остановлена пользователем',''); };
 
-/* ---------- вкладки ---------- */
-function showTab(n){ ACTIVE_TAB=n; ['app','srv','con','res'].forEach(x=>{ $('tab-'+x).hidden=(x!==n); }); [...$('tabs').children].forEach(b=>b.classList.toggle('on',b.dataset.tab===n));
-  if(n==='app')resize(); if(n==='srv'){syncNetInputs();renderSrv();} if(n==='res')renderStats(); if(n==='con'){renderCfg();renderCodes();renderEnergy();renderEnv();} }
-$('tabs').onclick=e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.tab);};
-function showSub(n){ ['cfg','calc','en','env','json'].forEach(x=>{$('sub-'+x).hidden=(x!==n);}); [...$('subtabs').children].forEach(b=>b.classList.toggle('on',b.dataset.sub===n)); if(n==='en')$('pEmax').value=cv('ENERGY_MAX'); }
-$('subtabs').onclick=e=>{const b=e.target.closest('button');if(b)showSub(b.dataset.sub);};
+/* ---------- экраны ---------- */
+const SCR={run:['Бег',null],dec:['Решение',null],data:['Данные',null],srv:['Сервер','more'],res:['Итоги',null],more:['Ещё',null],
+  test:['Режим и сценарий','more'],con:['Консоль','more'],help:['Как пользоваться','more'],
+  'sub-cfg':['Конфиги','con'],'sub-calc':['Расчёт скорости','con'],'sub-en':['Энергия','con'],'sub-env':['Среды и помехи','con'],'sub-json':['JSON и коды','con']};
+function rootOf(n){ while(SCR[n]&&SCR[n][1])n=SCR[n][1]; return n; }
+function show(n){ if(!SCR[n])n='run'; ACTIVE_TAB=n;
+  Object.keys(SCR).forEach(x=>{ $('scr-'+x).hidden=(x!==n); });
+  $('barTitle').textContent=SCR[n][0]; $('back').hidden=!SCR[n][1]; $('back').dataset.go=SCR[n][1]||'';
+  const root=rootOf(n); [...$('nav').children].forEach(b=>b.classList.toggle('on',b.dataset.go===root));
+  window.scrollTo(0,0);
+  if(n==='run'||n==='data'){ renderRunHint(); if(n==='data'){ if(MODE==='real')renderRealBox(); resize(); drawChart(); } }
+  if(n==='dec')renderDecision(); if(n==='srv'){syncNetInputs();renderSrv();} if(n==='res')renderStats();
+  if(n==='sub-cfg')renderCfg(); if(n==='sub-json')renderCodes(); if(n==='sub-en'){renderEnergy();$('pEmax').value=cv('ENERGY_MAX');} if(n==='sub-env')renderEnv();
+  if(n==='test'){ updateChip(); if(MODE==='real')renderRealBox(); } }
+function showTab(n){ show(({app:'run'})[n]||n); }
+function showSub(n){ show('sub-'+n); }
+document.addEventListener('click',e=>{ const b=e.target.closest('[data-go]'); if(b&&b.dataset.go)show(b.dataset.go); });
+function updateChip(){ const t={scen:()=>'Сценарий · '+(SCEN[SP.scn]?SCEN[SP.scn].name:''),real:()=>'Реал · датчики телефона',replay:()=>'Запись · '+((REPLAY&&REPLAY.name)||'файл не выбран')}[MODE];
+  $('chipTxt').textContent='Режим: '+(t?t():'—');
+  $('modeHint').textContent={scen:'Готовые сценарии движения с имитацией помех. Подходит для проверки логики без выхода на улицу.',real:'Данные берутся от датчиков телефона. Выйди на улицу и нажми «Старт» на экране «Бег».',replay:'Прогон записанных ранее данных датчиков через конвейер с текущими конфигами.'}[MODE]||''; }
+function renderRunHint(){ const h=$('runHint'); if(!h)return;
+  if(RUNNING){ h.textContent=(C.userPause?'Пауза пользователя':'Идёт сессия')+' · '+C.n+' с'; return; }
+  if(FINISHED){ h.textContent='Сессия завершена. Подробности — на экране «Итоги».'; return; }
+  if(MODE==='real'){ realCheck(); const st=REAL.st; h.textContent='Готов к старту · GPS: '+(st.geo||'—')+(st.step?' · шаги: '+st.step:'')+(st.act?' · активность: '+st.act:''); }
+  else h.textContent='Готов к старту · '+(MODE==='scen'?'сценарий «'+(SCEN[SP.scn]?SCEN[SP.scn].name:'')+'»':'запись'); }
 $('pW2').oninput=()=>{P.W2=Math.max(1,parseInt($('pW2').value)||1);};
 $('pSrc').onchange=()=>{P.src=$('pSrc').value;};
 function renderEnv(){ $('envBody').innerHTML=Object.keys(ENV).map(k=>{const e=ENV[k];return '<tr><td>'+e.name+'</td><td class="num">'+e.accMu+'</td><td class="num">'+e.accSd+'</td><td class="num">'+(e.dropP*100)+'%</td><td class="num">'+(e.jumpP*100)+'%</td><td class="num">'+e.jumpM+'</td><td class="num">'+e.osSd+'</td><td class="num">'+e.posSd+'</td></tr>';}).join(''); }
@@ -1089,7 +1300,7 @@ fillSelects(); applyNetPreset('ideal'); $('selNet').value='ideal'; showScen(); s
 renderCfg();renderCodes();renderEnv();renderEnergy();renderDelivery();resize();drawChart();
 (function(){ const q=new URLSearchParams(location.search);
   if(q.get('scn')&&SCEN[q.get('scn')]){ SP.scn=q.get('scn'); $('selScen').value=SP.scn; showScen(); }
-  if(q.get('tab'))showTab(q.get('tab')); if(q.get('sub'))showSub(q.get('sub')); if(q.has('log'))$('logBox').open=true;
+  if(q.get('tab'))showTab(q.get('tab')); if(q.get('sub'))showSub(q.get('sub')); if(q.get('go'))show(q.get('go')); if(q.has('log'))$('logBox').open=true;
   if(q.has('auto')){ const b=$('rate').querySelector('[data-r="10"]'); [...$('rate').children].forEach(x=>x.classList.remove('on')); b.classList.add('on'); rate=10; start(); } })();
 setInterval(()=>{ if(MODE==='real'&&!$('realBox').hidden&&NAT())renderRealBox(); },2000);
 
