@@ -191,6 +191,23 @@ body{padding-top:calc(var(--bar) + env(safe-area-inset-top));padding-bottom:calc
 .dec .dwhy{margin:0;padding-left:18px;font-size:13px;line-height:1.5}
 .dec .dwhy li{margin-bottom:6px}
 
+/* главный экран в «Реал»: три блока сверху, остальное в «Подробнее» */
+.realdec{display:none}
+#scr-run.real .realdec{display:block}
+#scr-run:not(.real) #runMore>summary{display:none}
+#runMore>summary{list-style:none;cursor:pointer;padding:12px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;font-weight:700;font-size:14px;display:flex;justify-content:space-between;align-items:center}
+#runMore>summary::-webkit-details-marker{display:none}
+#runMore>summary::after{content:'▾';color:var(--mut)}
+#runMore[open]>summary::after{content:'▴'}
+.card.dec{padding:14px 16px;margin-bottom:12px}
+.dec .dn{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--mut);display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.dec .dn b{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--panel2);align-items:center;justify-content:center;color:var(--fg);font-size:12px}
+.dtick{margin-left:auto;font-size:12px;text-transform:none;letter-spacing:0}
+#scr-run .dec .dverd{font-size:26px;margin-top:2px}
+#scr-run .dec .dmain{font-size:17px}
+.dec .bad{color:#ff8f7e;font-weight:700}
+#runMore>summary{text-transform:none;letter-spacing:0}
+
 .big2{font-size:34px;font-weight:800;font-variant-numeric:tabular-nums}
 </style>
 </head>
@@ -205,6 +222,18 @@ body{padding-top:calc(var(--bar) + env(safe-area-inset-top));padding-bottom:calc
 <!-- ============ ЭКРАН «БЕГ» ============ -->
 <section id="scr-run" class="screen">
   <button class="modechip" data-go="test"><span id="chipTxt">Режим: —</span><span class="chev">›</span></button>
+  <div class="realdec" id="realDec">
+    <div class="card dec"><div class="dn"><b>1</b> Телефон (ядро ОС) <span class="dtick" id="rdTick"></span></div>
+      <div class="dbig"><span id="rdV">—</span><span class="du">м/с</span></div>
+      <div class="dsub" id="rdS">Нажми «Старт»</div></div>
+    <div class="card dec"><div class="dn"><b>2</b> Вердикт сервера</div>
+      <div class="dverd" id="rdVerd">—</div>
+      <div class="dsub" id="rdSub">—</div></div>
+    <div class="card dec why" id="rdWhy"><div class="dn"><b>3</b> Почему</div>
+      <div class="dmain" id="rdMain">—</div>
+      <ul class="dwhy" id="rdList"></ul></div>
+  </div>
+  <details id="runMore" open><summary>Подробнее: спидометр, энергия, зона, состояние</summary>
   <div class="card runcard">
     <div class="gaugeWrap">
       <div class="gpsPill" id="gpsPill"><span id="gpsTxt">GPS</span> <span class="bars" id="bars"><i style="height:5px"></i><i style="height:8px"></i><i style="height:12px"></i></span> <span id="accTxt" class="mut" style="font-weight:500">±— м</span></div>
@@ -238,6 +267,7 @@ body{padding-top:calc(var(--bar) + env(safe-area-inset-top));padding-bottom:calc
     <div class="s mut" id="fsmS" style="font-size:12px;margin-top:4px">экран · сервер</div>
     <div class="off" id="offStrip" style="margin:10px 0 0">Официально (сервер): —</div>
   </div>
+  </details>
   <div class="runctl">
     <button class="btn pri" id="start">▶ Старт</button>
     <button class="btn" id="pause">⏸ Пауза</button>
@@ -358,7 +388,7 @@ body{padding-top:calc(var(--bar) + env(safe-area-inset-top));padding-bottom:calc
 <section id="scr-res" class="screen wide" hidden>
   <div class="card">
     <div class="row" style="justify-content:space-between"><div class="lab" style="margin:0">Секунды по зонам (официально, засчитанные тики RUN)</div>
-      <div class="row"><button class="btn sm" id="abSave">Зафиксировать как A</button><button class="btn sm" id="abClear">Сбросить A</button><button class="btn sm" id="expCsv">📋 CSV</button><button class="btn sm" id="expRec">⬇ Запись</button></div></div>
+      <div class="row"><button class="btn sm" id="abSave">Зафиксировать как A</button><button class="btn sm" id="abClear">Сбросить A</button><button class="btn sm" id="expXlsx">📊 Excel</button><button class="btn sm" id="expCsv">📋 CSV</button><button class="btn sm" id="expRec">⬇ Запись</button></div></div>
     <div id="zBars" style="margin-top:8px"></div>
     <div class="status" id="zCheck"></div>
   </div>
@@ -707,7 +737,7 @@ class RealSource{
     if(!d)return {fix:null,steps:0,sma:0,imuOk:false,stepSensor:false,act:null,mock:false,truth:null};
     let fix=null; if(d.fix){ const f=d.fix; REAL.fixN=f.id; REAL.fix={lat:f.lat,lon:f.lon,acc:f.acc,speed:f.speed,ts:f.ts}; fix={lat:f.lat,lon:f.lon,acc:f.acc,speed:f.speed,sacc:f.sacc==null?null:f.sacc,age:f.age,mock:!!f.mock,id:f.id,ts:f.ts/1000}; }
     const hasSteps=d.steps!=null, steps=hasSteps?Math.max(0,d.steps|0):0, imuOk=d.imuN>=cv('IMU_MIN_SAMPLES_PER_TICK');
-    const act={code:(d.act&&d.act.code)||null,conf:d.act?d.act.conf:null,age:d.act?d.act.age:null,est:false};
+    const act={code:(d.act&&d.act.code)||null,raw:(d.act&&d.act.raw)||null,conf:d.act?d.act.conf:null,age:d.act?d.act.age:null,est:false};
     return {fix,steps,sma:d.sma||0,imuOk,stepSensor:hasSteps,act,mock:!!(fix&&fix.mock),truth:null}; }
   next(){ if(NAT())return this.nextNative(); this.i++;
     const f=REAL.fix; let fix=null; if(f)fix={lat:f.lat,lon:f.lon,acc:f.acc,speed:f.speed,age:Math.max(0,(Date.now()-f.ts)/1000),mock:false,id:REAL.fixN,ts:f.ts/1000};
@@ -723,6 +753,62 @@ class ReplaySource{
   constructor(samples){ this.s=samples; this.i=0; }
   next(){ if(this.i>=this.s.length)return null; const x=JSON.parse(JSON.stringify(this.s[this.i++])); return x; }
 }
+
+/* ---------- Чистый JS-писатель xlsx (store-zip + inline strings), без внешних библиотек ---------- */
+var XLSX=(function(){
+  var CRC=(function(){var t=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;t[n]=c>>>0;}return t;})();
+  function crc32(u8){var c=0xFFFFFFFF;for(var i=0;i<u8.length;i++)c=CRC[(c^u8[i])&0xFF]^(c>>>8);return (c^0xFFFFFFFF)>>>0;}
+  function enc(s){return new TextEncoder().encode(s);}
+  function u16(n){return [n&0xFF,(n>>>8)&0xFF];}
+  function u32(n){return [n&0xFF,(n>>>8)&0xFF,(n>>>16)&0xFF,(n>>>24)&0xFF];}
+  function zip(files){ // files: [{name, data:Uint8Array}]
+    var local=[],central=[],offset=0;
+    files.forEach(function(f){
+      var nameB=enc(f.name), crc=crc32(f.data), sz=f.data.length;
+      var lh=[].concat(u32(0x04034b50),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),u32(sz),u32(sz),u16(nameB.length),u16(0));
+      local.push(new Uint8Array(lh),nameB,f.data);
+      var ch=[].concat(u32(0x02014b50),u16(20),u16(20),u16(0),u16(0),u16(0),u16(0),u32(crc),u32(sz),u32(sz),u16(nameB.length),u16(0),u16(0),u16(0),u16(0),u32(0),u32(offset));
+      central.push(new Uint8Array(ch),nameB);
+      offset+=30+nameB.length+sz;
+    });
+    var cstart=offset,clen=0;
+    central.forEach(function(x){clen+=x.length;});
+    var end=new Uint8Array([].concat(u32(0x06054b50),u16(0),u16(0),u16(files.length),u16(files.length),u32(clen),u32(cstart),u16(0)));
+    var parts=local.concat(central,[end]),total=0;
+    parts.forEach(function(p){total+=p.length;});
+    var out=new Uint8Array(total),pos=0;
+    parts.forEach(function(p){out.set(p,pos);pos+=p.length;});
+    return out;
+  }
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  function col(n){var s='';n++;while(n>0){var m=(n-1)%26;s=String.fromCharCode(65+m)+s;n=(n-m-1)/26;}return s;}
+  function sheetXml(rows){ // rows: array of arrays of cells; cell = number | string | null
+    var x='<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>';
+    for(var r=0;r<rows.length;r++){
+      x+='<row r="'+(r+1)+'">';
+      for(var c=0;c<rows[r].length;c++){
+        var v=rows[r][c],ref=col(c)+(r+1);
+        if(v==null||v===''){continue;}
+        if(typeof v==='number'&&isFinite(v)){x+='<c r="'+ref+'"><v>'+v+'</v></c>';}
+        else{x+='<c r="'+ref+'" t="inlineStr"><is><t xml:space="preserve">'+esc(v)+'</t></is></c>';}
+      }
+      x+='</row>';
+    }
+    return x+'</sheetData></worksheet>';
+  }
+  function build(sheetName,rows){
+    var files=[
+      {name:'[Content_Types].xml',data:enc('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>')},
+      {name:'_rels/.rels',data:enc('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>')},
+      {name:'xl/workbook.xml',data:enc('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets><sheet name="'+esc(sheetName).slice(0,31)+'" sheetId="1" r:id="rId1"/></sheets></workbook>')},
+      {name:'xl/_rels/workbook.xml.rels',data:enc('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/></Relationships>')},
+      {name:'xl/worksheets/sheet1.xml',data:enc(sheetXml(rows))}
+    ];
+    return zip(files); // Uint8Array
+  }
+  function b64(u8){var s='';for(var i=0;i<u8.length;i++)s+=String.fromCharCode(u8[i]);return btoa(s);}
+  return {build:build,b64:b64};
+})();
 
 /* ===== клиент (экран): оценка скорости, состояния, очередь отправки ===== */
 const P={W2:2,src:'os'};
@@ -1003,7 +1089,7 @@ function renderDelivery(){
   $('dlvS').textContent='флаш раз в '+cv('BATCH_FLUSH_INTERVAL_SEC')+' с, до '+cv('BATCH_MAX_TICKS')+' тиков · таймаут '+cv('BATCH_TIMEOUT_SEC')+' с · повторов '+cv('RETRY_MAX_ATTEMPTS');
   const inq=pend+(NET.inflight?NET.inflight.batch.ticks.length:0)+(NET.retry?NET.retry.ticks.length:0)+NET.deferred.reduce((a,b)=>a+b.ticks.length,0);
   $('buf').textContent=inq; $('bufMax').textContent=cv('OFFLINE_BUFFER_MAX_TICKS'); $('sent').textContent=NET.st.ticksAcked; $('batchNo').textContent=NET.batchNo; }
-function renderLight(){ renderEnergy(); renderDelivery(); renderRunHint(); if(ACTIVE_TAB==='dec')renderDecision(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
+function renderLight(){ renderEnergy(); renderDelivery(); renderRunHint(); renderDecision(); renderRealDec(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
 function render(){
   if(QUIET)return;
   const r=ROWS.length?ROWS[ROWS.length-1]:null;
@@ -1040,7 +1126,7 @@ function render(){
     $('offStrip').innerHTML='Официально (сервер): <b>'+fmt(o.vest)+' м/с</b> · '+(STATE_LBL[o.state]||STATE_LBL.idle)[0]+' · '+(o.accepted?'<span class="good">засчитан</span>':(o.hard.length?'<span class="bad">отклонён</span>':'не засчитан'))+' · отстаёт от экрана на '+Math.max(0,C.n-o.n)+' с'; }
   else { $('offStrip').textContent='Официально (сервер): ожидает первый пакет'; }
   renderEnergy(); renderDelivery(); renderRunHint(); drawChart(); renderLog();
-  if(ACTIVE_TAB==='dec')renderDecision(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
+  renderDecision(); renderRealDec(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
 
 /* ---------- экран «Решение» ---------- */
 function rowByN(n){ for(let i=ROWS.length-1;i>=0&&i>ROWS.length-300;i--)if(ROWS[i].n===n)return ROWS[i]; return null; }
@@ -1090,6 +1176,42 @@ function renderDecision(){
   // таблица
   $('decBody').innerHTML=SRV.ticks.slice(-12).reverse().map(t=>{ const vv=verdOf(t); const d=(t.vest!=null&&t.vOs!=null)?sgn(t.vest-t.vOs):'—';
     return '<tr><td class="num">'+t.n+'</td><td class="num">'+fmt(t.vOs)+'</td><td class="num">'+fmt(t.vest)+'</td><td class="num">'+d+'</td><td class="'+vv[1]+'">'+esc(vv[0])+(t.hard.length?' · '+esc(t.hard[0]):'')+'</td></tr>'; }).join(''); }
+
+/* ---------- главный экран в режиме «Реал»: телефон → вердикт → причина ---------- */
+function codeWhy2(c){ const d=(CODES[c]||{}).condition; return '<b>'+c+'</b>'+(d?' — '+esc(d):''); }
+function renderRealDec(){
+  if(MODE!=='real')return;
+  const o=lastOff(); if(!o)return;
+  const r=rowByN(o.n), fx=r&&r.payload?r.payload.fix:null, pl=r?r.payload:null;
+  $('rdTick').textContent='тик №'+o.n;
+  $('rdV').textContent=o.vOs==null?'—':o.vOs.toFixed(2);
+  const c=[];
+  if(o.vOs==null)c.push('<span class="bad">ОС не дала скорость: '+(fx?'в тике нет значения скорости':'нет определения координат (фикса)')+'</span>');
+  if(fx)c.push('точность ±'+fx.acc.toFixed(0)+' м'+((fx.age||0)>0?' · возраст '+fx.age+' с':''));
+  if(pl){ c.push('шагов в тике: '+(pl.steps==null?'—':pl.steps)); c.push('активность: '+(pl.act&&pl.act.code?pl.act.code:'нет')); if(pl.mock)c.push('<span class="bad">подмена геопозиции</span>'); }
+  $('rdS').innerHTML=c.join(' · ');
+  const vv=(o.state!=='run')?['не в RUN · '+(STATE_LBL[o.state]||STATE_LBL.idle)[0],'mut']:o.hard.length?['✕ отклонён','bad']:o.noest?['нет оценки скорости','warnc']:['✓ засчитан','good'];
+  $('rdVerd').textContent=vv[0]; $('rdVerd').className='dverd '+vv[1];
+  $('rdSub').innerHTML=(o.vest==null?'официальной скорости нет':'официальная скорость <b>'+o.vest.toFixed(2)+' м/с</b>')+(o.accepted?' · зона <b>'+ZNAMES[o.zone].split(' · ')[0]+'</b> '+ZNAMES[o.zone].split(' · ')[1]:'')+' · сервер '+(STATE_LBL[o.state]||STATE_LBL.idle)[0];
+  const why=[]; let main;
+  const recalc=o.vest!=null&&(o.vOs==null||Math.abs(o.vest-o.vOs)>=0.005);
+  const stN={pause:'автоматическая пауза: движения нет',pause_user:'пауза по кнопке пользователя',lost:'нет пригодного измерения скорости дольше LOST_MICRO_MAX_SEC ('+cv('LOST_MICRO_MAX_SEC')+' с)',stop:'сессия завершена'};
+  if(o.hard.length){ main='Тик отклонён: '+o.hard.join(', '); o.hard.forEach(k=>why.push(codeWhy2(k))); }
+  else if(o.state!=='run'){ main='Тик получен в состоянии '+(STATE_LBL[o.state]||STATE_LBL.idle)[0]+': в зоны не идёт'; why.push(stN[o.state]||''); (o.info||[]).filter(k=>/^SESSION_STOPPED/.test(k)).forEach(k=>why.push(codeWhy2(k))); }
+  else if(o.noest){ main='Оценки скорости нет: тик не засчитан и не отклонён'; why.push('ни скорости ОС, ни расчёта по координатам, удерживать нечего'); }
+  else if(recalc){ main='Тик принят, скорость пересчитана: ОС '+(o.vOs==null?'—':o.vOs.toFixed(2))+' → сервер '+o.vest.toFixed(2)+' м/с';
+    if(o.held)why.push('измерения нет, удержана прежняя оценка (SPEED_ESTIMATE_HELD, не дольше hold_timeout_sec = '+cv('hold_timeout_sec')+' с)');
+    else {
+      if(o.src==='GPS_DELTA')why.push(o.vOs==null?'скорости ОС в тике нет, скорость посчитана по смещению координат (GPS_DELTA)':'выбран приоритет расчёта по координатам (GPS_DELTA)');
+      if(o.w>1&&o.vsm!=null&&o.vmeas!=null&&Math.abs(o.vsm-o.vmeas)>=0.005)why.push('среднее по окну из '+o.w+' тиков: измерение '+o.vmeas.toFixed(2)+' → '+o.vsm.toFixed(2)+' м/с');
+      if(o.vsm!=null&&o.vsm>0&&o.vest===0)why.push('среднее '+o.vsm.toFixed(2)+' м/с ниже V_STOP_MPS ('+cv('V_STOP_MPS')+' м/с): скорость обнулена');
+    } }
+  else { main='Тик принят: скорость ОС использована без изменений'; why.push('окно '+(o.w>1?'из '+o.w+' тиков дало то же значение':'1 тик, сглаживания нет')); }
+  (o.soft||[]).filter(k=>k!=='SPEED_ESTIMATE_HELD'&&k!=='GNSS_DATA_MISSING').forEach(k=>why.push('пометка, тик засчитан: '+codeWhy2(k)));
+  if(!o.hasFix&&o.state==='run')why.push('GNSS_DATA_MISSING: фикс не принят сервером (точность хуже ACC_MAX_FOR_FIX или устарел)');
+  $('rdMain').textContent=main; $('rdWhy').style.borderColor=vv[1]==='good'?'var(--w1)':(vv[1]==='bad'?'var(--red)':'');
+  $('rdList').innerHTML=why.filter(Boolean).map(x=>'<li>'+x+'</li>').join(''); }
+function applyRunLayout(){ const real=(MODE==='real'); $('scr-run').classList.toggle('real',real); $('runMore').open=!real; if(real)renderRealDec(); }
 function renderLog(){ if(!$('logBox').open)return;
   $('logBody').innerHTML=ROWS.slice(-30).reverse().map(t=>{ const o=t.off; return '<tr><td class="num">'+t.n+'</td><td class="v">'+hhmmss(t.t)+'</td><td class="num">'+(t.v1==null?'—':t.v1.toFixed(2))+'</td><td>'+t.src+'</td><td class="num">'+t.cad.toFixed(1)+'</td><td>'+(STATE_LBL[t.state]||STATE_LBL.idle)[0]+'</td><td>'+(o?(STATE_LBL[o.state]||STATE_LBL.idle)[0]:'—')+'</td><td class="num">'+(o?fmt(o.vest):'—')+'</td><td>'+(o?chips(o):'<span class="ri">ещё не на сервере</span>')+'</td><td>'+(o&&o.zone!=null?'Z'+o.zone:'—')+'</td><td class="num">'+(o?o.energy.toFixed(2)+(o.depleted?' ⚠':''):'—')+'</td><td>'+t.batch+'</td></tr>'; }).join(''); }
 $('logBox').addEventListener('toggle',renderLog);
@@ -1117,9 +1239,9 @@ function resetUi(){
   $('gv').textContent='0.0';$('gvk').textContent='0.0 км/ч · экран, окно 1';$('arcFill').setAttribute('stroke-dashoffset',100);
   ['nW1','nCore','nW2'].forEach(i=>{$(i).style.display='';$(i).setAttribute('transform','rotate(-90 150 150)');});
   ['fsm','fsmSrv','mFsm'].forEach(i=>{$(i).textContent='—';$(i).className='badge b-idle';});
-  $('act').textContent='—';$('actS').textContent='—';$('verd').textContent='—';$('verd').className='m';$('verdS').textContent='коды причин';$('zoneBig').textContent='—';$('zoneS').textContent='официально, только RUN';
+  $('act').textContent='—';$('actS').textContent='—';$('verd').textContent='—';$('verd').className='m';$('verdS').textContent='коды причин';$('zoneBig').textContent='—';$('zoneS').textContent='официально, только RUN';$('rdTick').textContent='';$('rdV').textContent='—';$('rdS').textContent='Нажми «Старт»';$('rdVerd').textContent='—';$('rdVerd').className='dverd';$('rdSub').textContent='—';$('rdMain').textContent='—';$('rdList').innerHTML='';
   $('accTxt').textContent='±— м';$('logBody').innerHTML='';$('offStrip').textContent='Официально (сервер): —';$('pause').textContent='⏸ Пауза';
-  renderDelivery(); renderEnergy(); drawChart(); if(ACTIVE_TAB==='dec')renderDecision(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
+  renderDelivery(); renderEnergy(); drawChart(); renderDecision(); renderRealDec(); if(ACTIVE_TAB==='srv')renderSrv(); if(ACTIVE_TAB==='res')renderStats(); }
 
 /* ---------- сервер (вкладка) ---------- */
 function renderSrv(){
@@ -1169,13 +1291,59 @@ $('expCsv').onclick=()=>{ if(!ROWS.length){toast('Сессия пуста','warn
   const f=x=>x==null?'':(typeof x==='number'?(Number.isInteger(x)?x:+x.toFixed(4)):x);
   const rows=ROWS.map(r=>{ const o=r.off||{hard:[],soft:[],info:[]}; return [SID,r.n,new Date(r.t).toISOString(),r.state.toUpperCase(),f(r.v1),f(r.vc),r.src,f(r.acc),r.steps,f(r.cad),r.act,r.off?o.state.toUpperCase():'',r.off?f(o.vest):'',r.off?o.src:'',r.off?(o.accepted?1:0):'',o.hard.join(';'),o.soft.join(';'),o.info.join(';'),(r.off&&o.zone!=null)?'Z'+o.zone:'',r.off?+o.energy.toFixed(4):'',r.off?(o.depleted?1:0):'',r.batch].join(','); });
   download('FrameSteps_session_'+SID.slice(0,8)+'.csv','﻿'+H.join(',')+'\n'+rows.join('\n'),'text/csv;charset=utf-8'); toast('CSV: '+ROWS.length+' тиков',''); };
+/* ---------- выгрузка в Excel (.xlsx) ---------- */
+function downloadBin(name,mime,u8){ const b64=XLSX.b64(u8);
+  if(typeof window.FSNative!=='undefined'&&window.FSNative&&window.FSNative.saveFileB64){ try{ const r=window.FSNative.saveFileB64(name,mime,b64); toast(r==='ok'?'Сохранено в «Загрузки»: '+name:'Не сохранено: '+r,r==='ok'?'':'bad'); }catch(e){ toast('Не сохранено: '+e.message,'bad'); } return; }
+  const arr=new Uint8Array(u8.length); arr.set(u8); const b=new Blob([arr],{type:mime}),a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500); }
+function tickVerdict(r,o){ if(!o)return['—','нет решения сервера'];
+  if(o.hard&&o.hard.length)return['отклонён','отклонён: '+o.hard[0]];
+  const st=(o.state||r.state||'').toLowerCase();
+  if(st&&st!=='run')return['не в учёте ('+st+')', st==='pause'||st==='pause_short'?'автопауза: покой подтверждён':(st==='pause_user'?'пауза по кнопке':(st==='lost'?'потеря наблюдаемости':(st==='stop'?'сессия завершена':st)))];
+  if(o.vest==null)return['без оценки','измерения нет (MISSING)'];
+  if(o.soft&&o.soft.length)return['засчитан с пометкой','снижено качество: '+o.soft[0]];
+  return['засчитан','принят: скорость '+(o.src||'')]; }
+function xlsxRows(){ const n=x=>x==null?null:(typeof x==='number'?(Number.isInteger(x)?x:+x.toFixed(4)):x);
+  const head=['тик','время','speed_os','точность','has_fix','шаги','activity_code','activity_raw','mock','sma','v_client','v_server','отклонение','meas_source','состояние','вердикт','зона','энергия','коды','обоснование'];
+  const out=[head];
+  ROWS.forEach(r=>{ const o=r.off,p=r.payload||{},fx=p.fix||null; const v=tickVerdict(r,o);
+    const vcli=r.v1, vsrv=o?o.vest:null, dev=(typeof vcli==='number'&&typeof vsrv==='number')?+(vcli-vsrv).toFixed(4):null;
+    const raw=(p.act&&p.act.raw)?p.act.raw:((p.act&&p.act.est===false)?(r.act||''):'');
+    out.push([r.n,new Date(r.t).toISOString(),n(fx?fx.speed:null),n(r.acc),r.hasFix?'да':'нет',r.steps,r.act||'',raw,p.mock?'ДА':'нет',n(p.sma),n(vcli),n(vsrv),dev,o?o.src:'',o?(o.state||'').toUpperCase():(r.state||'').toUpperCase(),v[0],(o&&o.zone!=null)?'Z'+o.zone:'',o?n(o.energy):null,o?[].concat(o.hard||[],o.soft||[],o.info||[]).join('; '):'',v[1]]); });
+  return out; }
+window.__xlsxB64=()=>XLSX.b64(XLSX.build('Тики',xlsxRows()));
+function expXlsx(){ if(!ROWS.length){toast('Сессия пуста','warn');return;}
+  downloadBin('FrameSteps_session_'+SID.slice(0,8)+'.xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',XLSX.build('Тики',xlsxRows())); toast('Excel: '+ROWS.length+' тиков',''); }
+if($('expXlsx'))$('expXlsx').onclick=expXlsx;
 function saveRecord(){ if(!REC.samples.length){toast('Записи нет: сначала проведи сессию','warn');return;}
   download('FrameSteps_record_'+(REC.meta?REC.meta.mode:'x')+'_'+new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')+'.json',JSON.stringify({format:'framesteps-sim-record-1',meta:REC.meta,cfg:flatCfg(),samples:REC.samples}));
   toast('Запись сохранена: '+REC.samples.length+' тиков',''); }
 $('expRec').onclick=saveRecord; $('recSave').onclick=saveRecord;
 $('recLoad').onclick=()=>$('recFile').click();
+/* Нормализация внешней схемы датчиков → внутренний снимок источника.
+   Внешняя схема (документированная): speed_os_mps, speed_accuracy_mps, acc_h_m, lat_deg, lon_deg,
+   steps_total (накопленное) либо steps (дельта), sma, activity_code, activity_raw, activity_confidence,
+   mock_location, t_utc_ms, client_logical_index, has_fix. Внутренний снимок: {fix{…},steps,sma,imuN,act{…},mock}. */
+function isExternalSample(s){ return s && typeof s==='object' && !('fix' in s) &&
+  ('speed_os_mps' in s||'acc_h_m' in s||'mock_location' in s||'steps_total' in s||'activity_code' in s||'lat_deg' in s); }
+function normSamples(arr){ let prevTot=null; return arr.map((s,i)=>{
+  if(!isExternalSample(s))return s;
+  const num=x=>(x==null?null:+x);
+  const spd=num(s.speed_os_mps), acc=num(s.acc_h_m), lat=num(s.lat_deg), lon=num(s.lon_deg);
+  const hasGeo=(s.has_fix!==false)&&(spd!=null||acc!=null||lat!=null);
+  const fix=hasGeo?{lat:lat==null?0:lat,lon:lon==null?0:lon,acc:acc==null?999:acc,speed:spd,
+     sacc:num(s.speed_accuracy_mps),age:0,mock:!!s.mock_location,id:i,
+     ts:(s.t_utc_ms!=null?+s.t_utc_ms:i*1000)}:null;
+  let steps=null;
+  if('steps' in s&&s.steps!=null)steps=Math.max(0,s.steps|0);
+  else if('steps_total' in s&&s.steps_total!=null){ const t=+s.steps_total; steps=prevTot==null?null:Math.max(0,t-prevTot); prevTot=t; }
+  const smaV=num(s.sma), imuN=(smaV!=null?25:0);
+  const act=s.activity_code?{code:s.activity_code,raw:s.activity_raw||null,conf:(s.activity_confidence!=null?+s.activity_confidence:70),age:0}:null;
+  return {fix,steps,sma:smaV==null?0:smaV,imuN,imuOk:imuN>0,stepSensor:steps!=null,act,mock:!!s.mock_location,truth:null}; }); }
 $('recFile').onchange=e=>{ const f=e.target.files[0]; if(!f)return; const rd=new FileReader();
-  rd.onload=()=>{ try{ const j=JSON.parse(rd.result); if(!j||!Array.isArray(j.samples)||!j.samples.length)throw new Error('нет samples'); REPLAY={samples:j.samples,meta:j.meta||{},cfg:j.cfg||null,name:f.name}; renderRecInfo(); toast('Запись загружена: '+j.samples.length+' тиков',''); }catch(err){ toast('Запись не разобрана: '+err.message,'bad'); } };
+  rd.onload=()=>{ try{ const j=JSON.parse(rd.result); if(!j||!Array.isArray(j.samples)||!j.samples.length)throw new Error('нет samples');
+    const ext=isExternalSample(j.samples[0]); const samples=ext?normSamples(j.samples):j.samples;
+    REPLAY={samples,meta:j.meta||{},cfg:j.cfg||null,name:f.name}; renderRecInfo();
+    toast('Запись загружена: '+samples.length+' тиков'+(ext?' (внешняя схема)':''),''); }catch(err){ toast('Запись не разобрана: '+err.message,'bad'); } };
   rd.readAsText(f,'utf-8'); e.target.value=''; };
 function renderRecInfo(){ if(typeof updateChip==='function')updateChip(); const r=REPLAY||(REC.samples.length?{samples:REC.samples,meta:REC.meta,name:'последняя сессия'}:null);
   $('recInfo').textContent=r?('Источник: '+(r.name||'запись')+' · '+r.samples.length+' тиков'+(r.meta&&r.meta.mode?' · записано в режиме «'+r.meta.mode+'»':'')+'. Старт прогонит эти тики через конвейер с текущими конфигами.'):'Запись — это входные данные датчиков: те же тики можно прогонять через конвейер при разных конфигах. Пока записи нет: проведи сессию или загрузи файл.'; }
@@ -1191,7 +1359,7 @@ $('realThr').oninput=()=>{ const v=parseFloat($('realThr').value); if(isFinite(v
 
 /* ---------- элементы управления ---------- */
 function segSel(id,cb){ $(id).onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$(id).children].forEach(x=>x.classList.remove('on'));b.classList.add('on');cb(b);}; }
-function setMode(m){ MODE=m; updateChip(); renderRunHint(); $('scenRow').hidden=(m!=='scen'); $('replayRow').hidden=(m!=='replay'); $('realBox').hidden=(m!=='real'); $('trueLeg').style.display=(m==='real')?'none':'inline-flex';
+function setMode(m){ MODE=m; applyRunLayout(); updateChip(); renderRunHint(); $('scenRow').hidden=(m!=='scen'); $('replayRow').hidden=(m!=='replay'); $('realBox').hidden=(m!=='real'); $('trueLeg').style.display=(m==='real')?'none':'inline-flex';
   [...$('mode').children].forEach(b=>b.classList.toggle('on',b.dataset.m===m)); if(m==='real')renderRealBox(); if(m==='replay')renderRecInfo(); }
 segSel('mode',b=>{ if(RUNNING)endSession(''); resetSession(); setMode(b.dataset.m); });
 segSel('rate',b=>{ rate=+b.dataset.r; if(timer){clearInterval(timer);timer=setInterval(tickLoop,Math.round(1000/(MODE==='real'?1:rate)));} });
@@ -1227,7 +1395,7 @@ function show(n){ if(!SCR[n])n='run'; ACTIVE_TAB=n;
   const root=rootOf(n); [...$('nav').children].forEach(b=>b.classList.toggle('on',b.dataset.go===root));
   window.scrollTo(0,0);
   if(n==='run'||n==='data'){ renderRunHint(); if(n==='data'){ if(MODE==='real')renderRealBox(); resize(); drawChart(); } }
-  if(n==='dec')renderDecision(); if(n==='srv'){syncNetInputs();renderSrv();} if(n==='res')renderStats();
+  if(n==='dec')renderDecision(); if(n==='run')renderRealDec(); if(n==='srv'){syncNetInputs();renderSrv();} if(n==='res')renderStats();
   if(n==='sub-cfg')renderCfg(); if(n==='sub-json')renderCodes(); if(n==='sub-en'){renderEnergy();$('pEmax').value=cv('ENERGY_MAX');} if(n==='sub-env')renderEnv();
   if(n==='test'){ updateChip(); if(MODE==='real')renderRealBox(); } }
 function showTab(n){ show(({app:'run'})[n]||n); }

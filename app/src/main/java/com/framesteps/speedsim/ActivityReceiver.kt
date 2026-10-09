@@ -27,10 +27,23 @@ class ActivityReceiver : BroadcastReceiver() {
                 else -> null
             }
             if (code != null) {
-                ActivityState.set(code, a.confidence)
+                ActivityState.set(code, rawName(a.type), a.confidence)
                 return
             }
         }
-        ActivityState.set("UNKNOWN", sorted.firstOrNull()?.confidence ?: 0)
+        // Подходящего значения эталона нет: код UNKNOWN, но сырой тип ОС сохраняем для разбора.
+        val top = sorted.firstOrNull()
+        ActivityState.set("UNKNOWN", top?.let { rawName(it.type) } ?: "UNKNOWN", top?.confidence ?: 0)
+    }
+
+    private fun rawName(type: Int): String = when (type) {
+        DetectedActivity.IN_VEHICLE -> "IN_VEHICLE"
+        DetectedActivity.ON_BICYCLE -> "ON_BICYCLE"
+        DetectedActivity.ON_FOOT -> "ON_FOOT"
+        DetectedActivity.RUNNING -> "RUNNING"
+        DetectedActivity.WALKING -> "WALKING"
+        DetectedActivity.STILL -> "STILL"
+        DetectedActivity.TILTING -> "TILTING"
+        else -> "UNKNOWN"
     }
 }

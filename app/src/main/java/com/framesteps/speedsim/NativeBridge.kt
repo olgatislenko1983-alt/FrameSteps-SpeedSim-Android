@@ -216,6 +216,7 @@ class NativeBridge(private val act: MainActivity) : SensorEventListener {
         if (code != null) {
             val ao = JSONObject()
             ao.put("code", code)
+            ao.put("raw", ActivityState.raw ?: JSONObject.NULL)
             ao.put("conf", ActivityState.confidence)
             ao.put("age", ActivityState.ageSec() ?: 0.0)
             o.put("act", ao)
@@ -232,10 +233,17 @@ class NativeBridge(private val act: MainActivity) : SensorEventListener {
 
     /** Сохранение текста в «Загрузки». Возвращает "ok" либо текст ошибки. */
     @JavascriptInterface
-    fun saveFile(name: String, mime: String, text: String): String {
+    fun saveFile(name: String, mime: String, text: String): String =
+        writeDownloads(name, mime, text.toByteArray(Charsets.UTF_8))
+
+    @android.webkit.JavascriptInterface
+    fun saveFileB64(name: String, mime: String, b64: String): String =
+        try { writeDownloads(name, mime, android.util.Base64.decode(b64, android.util.Base64.DEFAULT)) }
+        catch (e: Exception) { e.message ?: "ошибка декодирования" }
+
+    private fun writeDownloads(name: String, mime: String, bytes: ByteArray): String {
         return try {
             val safe = name.replace(Regex("[\\\\/:*?\"<>|]"), "_")
-            val bytes = text.toByteArray(Charsets.UTF_8)
             if (Build.VERSION.SDK_INT >= 29) {
                 val v = ContentValues()
                 v.put(MediaStore.MediaColumns.DISPLAY_NAME, safe)
